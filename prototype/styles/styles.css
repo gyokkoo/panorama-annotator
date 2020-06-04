@@ -1,0 +1,5 @@
+/* the viewer container must have a defined size */
+#photosphere {
+    width: 50vw;
+    height: 50vh;
+}
