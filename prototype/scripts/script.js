@@ -1,5 +1,5 @@
 const viewer = new PhotoSphereViewer.Viewer({
-    panorama: 'https://photo-sphere-viewer.js.org/assets/sphere.jpg',
+    panorama: 'https://fmi-panorama-images.s3.amazonaws.com/01_panorama.jpg',
     container: 'photosphere',
     caption: 'Sample mountain panorama',
     loadingImg: 'https://photo-sphere-viewer.js.org/assets/photosphere-logo.gif',
