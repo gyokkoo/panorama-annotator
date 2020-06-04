@@ -51,20 +51,5 @@ viewer.animate({
 }).then(() => {
     console.debug('Animation completed.');
 
-    const canvas = document.querySelector('canvas');
-    if (canvas === null) {
-        throw new Error("Canvas element cannot be found, check that canvas is the DOM!");
-    }
-
-    // Initialize the GL context
-    const glContext = canvas.getContext("webgl");
-
-    // Only continue if WebGL is available and working
-    if (glContext === null) {
-        alert("Unable to initialize WebGL. Your browser or machine may not support it.");
-        return;
-    }
-
-    // Here we have canvas context can draw directly into the webGl cavnas.
     // API specs: https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API 
 });
