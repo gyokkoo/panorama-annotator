@@ -24,7 +24,7 @@ viewer.on('click', (e, data) => {
 
     if (!data.rightclick) {
         // Add red Pin annotation on left click.
-        markersPlugin.addMarker({
+        const marker = {
             id: '#' + Math.random(),
             longitude: data.longitude,
             latitude: data.latitude,
@@ -36,7 +36,11 @@ viewer.on('click', (e, data) => {
             data: {
                 generated: true
             }
-        });
+        };
+
+        markersPlugin.addMarker(marker);
+
+        saveAnotationMarker(marker);
     }
 
     console.debug(`TODO: Save annotation with ${data.longitude} and ${data.latitude} coordinates in a database.`);
@@ -53,3 +57,28 @@ viewer.animate({
 
     // API specs: https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API 
 });
+
+function saveAnotationMarker(marker) {
+    const serverEndpoint = "../server/create-anotation.php";
+
+    const serverData = {
+        longitude: marker.longitude,
+        latitute: marker.latitude,
+        tooltip: marker.tooltip,
+    }
+    console.log(serverData);
+
+    fetch(serverEndpoint, {
+        method: 'POST',
+        body: JSON.stringify(marker)
+    })
+        .then(response => response.json())
+        .then(response => {
+            console.log(response);
+            if (response.success === true && response.message) {
+                // Handle success
+            } else if (response.success === false && response.message) {
+                // Handle error
+            }
+        });
+}
