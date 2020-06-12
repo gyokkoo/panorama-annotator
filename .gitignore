@@ -105,3 +105,6 @@ dist
 
 # OS Specific
 .DS_Store
+
+# AWS Specific
+.secrets/
