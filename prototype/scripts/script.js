@@ -10,13 +10,18 @@ const viewer = new PhotoSphereViewer.Viewer({
     plugins: [
         [PhotoSphereViewer.MarkersPlugin, {
             markers: [
-                // TODO: Fetch available annotations and add them here.
+                // NOTE: Markers are shown on panorama in getAllAnotations() method
             ],
         }],
     ],
 });
 
 const markersPlugin = viewer.getPlugin(PhotoSphereViewer.MarkersPlugin);
+
+// Wait for panarama image to load before visualizing anotations
+viewer.once('ready', () => {
+    getAllAnotations(markersPlugin);
+});
 
 // Event triggered on panorama image click.
 viewer.on('click', (e, data) => {
@@ -42,8 +47,6 @@ viewer.on('click', (e, data) => {
 
         saveAnotationMarker(marker);
     }
-
-    console.debug(`TODO: Save annotation with ${data.longitude} and ${data.latitude} coordinates in a database.`);
 });
 
 // Trigger sample animation
@@ -81,4 +84,35 @@ function saveAnotationMarker(marker) {
                 // Handle error
             }
         });
+}
+
+function getAllAnotations(markersPlugin) {
+    const serverEndpoint = "../server/get-all-anotations.php";
+
+    fetch(serverEndpoint, {
+        method: 'GET',
+    })
+        .then(response => response.json())
+        .then(response => {
+            if (response.success === true && response.result) {
+                response.result.forEach((marker) => {
+                    markersPlugin.addMarker({
+                        id: '#' + Math.random(),
+                        latitude: marker.latitude,
+                        longitude: marker.longitude,
+                        tooltip: marker.tooltip,
+                        width: 32,
+                        height: 32,
+                        anchor: 'bottom center',
+                        image: 'https://photo-sphere-viewer.js.org/assets/pin-red.png',
+                        data: {
+                            generated: true
+                        }
+                    })
+                })
+            } else if (response.success === false && response.message) {
+                console.error(response.message);
+            }
+        });
+
 }

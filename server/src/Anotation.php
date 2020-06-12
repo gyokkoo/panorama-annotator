@@ -8,9 +8,16 @@ class Anotation
 
     public function __construct($latitude, $longitude, $tooltip)
     {
-        $this->latitude = $latitude;
-        $this->longitude = $longitude;
-        $this->tooltip = $tooltip;
+        if(!$latitude || !$longitude || !$tooltip) {
+            $this->latitude = 0;
+            $this->longitude = 0;
+            $this->tooltip = '';
+        } else {
+            $this->latitude = $latitude;
+            $this->longitude = $longitude;
+            $this->tooltip = $tooltip;
+        }
+       
     }
 
     public function validate(): void
@@ -49,5 +56,20 @@ class Anotation
             var_dump($errorInfo);
             throw new Exception($errorMessage);
         }
+    }
+
+    public function read()
+    {
+        require_once "./src/Database.php";
+
+        $database = new Database();
+        $connection = $database->getConnection();
+
+        $readStatement = "SELECT * FROM `anotations-table`";
+        $readResult = $connection->prepare($readStatement);
+      
+        $readResult->execute();
+      
+        return $readResult;
     }
 }

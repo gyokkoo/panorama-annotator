@@ -10,7 +10,7 @@ require_once "./src/Anotation.php";
 $anotation = new Anotation(
     $latitude,
     $longitude,
-    $tooltip,
+    $tooltip
 );
 
 try {
