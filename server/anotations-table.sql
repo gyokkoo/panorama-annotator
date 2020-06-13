@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 12, 2020 at 07:04 PM
+-- Generation Time: Jun 13, 2020 at 08:04 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.5
 
@@ -28,22 +28,20 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `anotations-table` (
+  `id` varchar(120) NOT NULL,
   `latitude` double DEFAULT NULL,
-  `longitude` double DEFAULT NULL,
-  `tooltip` varchar(120) DEFAULT NULL
+  `longitude` double NOT NULL,
+  `tooltip` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `anotations-table`
 --
 
-INSERT INTO `anotations-table` (`latitude`, `longitude`, `tooltip`) VALUES
-(-0.20850374218236, 0.42060290492939, 'I was here'),
-(-0.12728187819504, 0.55750237486562, 'I was here'),
-(-0.074742352349845, 0.03758439727677, 'I was here'),
-(-0.25520820072011, 0.45011561848277, 'I was here'),
-(0.19694276067466, 5.4713471507678, 'I was here'),
-(0.32235566797703, 0.17776410996069, 'I was here');
+INSERT INTO `anotations-table` (`id`, `latitude`, `longitude`, `tooltip`) VALUES
+('#0.569888888888', -0.20850374218236, 0.42060290492939, 'I was here'),
+('#0.2112222222', -0.12728187819504, 0.55750237486562, 'Boo'),
+('#0.3335552445', -0.074742352349845, 0.03758439727677, 'I was here');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

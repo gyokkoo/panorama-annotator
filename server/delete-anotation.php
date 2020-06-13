@@ -3,21 +3,17 @@
 $phpInput = json_decode(file_get_contents("php://input"), true);
 
 $id = $phpInput["id"];
-$latitude = $phpInput["latitude"];
-$longitude = $phpInput["longitude"];
-$tooltip = $phpInput["tooltip"];
 
 require_once "./src/Anotation.php";
 $anotation = new Anotation(
     $id,
-    $latitude,
-    $longitude,
-    $tooltip
+    0,
+    0,
+    ''
 );
 
 try {
-    $anotation->validate();
-    $anotation->storeInDatabase();
+    $anotation->deleteFromDb();
 } catch (Exception $exception) {
     echo json_encode([
         'success' => false,
@@ -26,4 +22,4 @@ try {
     return;
 }
 
-echo json_encode(["success" => true, "message" => "Anotation was successfully added."]);
+echo json_encode(["success" => true, "message" => "Anotation was successfully removed."]);

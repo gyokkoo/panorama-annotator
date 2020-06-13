@@ -2,22 +2,17 @@
 
 class Anotation
 {
+    private $id;
     private $latitude;
-    private $lastName;
+    private $longitude;
     private $tooltip;
 
-    public function __construct($latitude, $longitude, $tooltip)
+    public function __construct($id, $latitude, $longitude, $tooltip)
     {
-        if(!$latitude || !$longitude || !$tooltip) {
-            $this->latitude = 0;
-            $this->longitude = 0;
-            $this->tooltip = '';
-        } else {
-            $this->latitude = $latitude;
-            $this->longitude = $longitude;
-            $this->tooltip = $tooltip;
-        }
-       
+        $this->id = $id;
+        $this->latitude = $latitude;
+        $this->longitude = $longitude;
+        $this->tooltip = $tooltip;
     }
 
     public function validate(): void
@@ -34,11 +29,12 @@ class Anotation
         $connection = $database->getConnection();
 
         $insertStatement = $connection->prepare(
-            "INSERT INTO `anotations-table` (latitude, longitude, tooltip)
-                       VALUES (:latitude, :longitude, :tooltip)"
+            "INSERT INTO `anotations-table` (id, latitude, longitude, tooltip)
+                       VALUES (:id, :latitude, :longitude, :tooltip)"
         );
 
         $insertResult = $insertStatement->execute([
+            "id" => $this->id,
             "latitude" => $this->latitude,
             "longitude" => $this->longitude,
             "tooltip" => $this->tooltip,
@@ -72,4 +68,16 @@ class Anotation
       
         return $readResult;
     }
+
+    public function deleteFromDb(): void {
+        require_once "./src/Database.php";
+
+        $database = new Database();
+        $connection = $database->getConnection();
+
+        $deleteStatement = "DELETE FROM `anotations-table`  WHERE id = '$this->id'";
+
+        $deleteResult = $connection->prepare($deleteStatement);
+        $deleteResult->execute();
+    }       
 }

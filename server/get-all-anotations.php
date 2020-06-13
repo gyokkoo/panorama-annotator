@@ -2,7 +2,7 @@
 
 require_once "./src/Anotation.php";
 
-$anotation = new Anotation(0, 0, '');
+$anotation = new Anotation('', 0, 0, '');
 $readStatement = $anotation->read();
 $count = $readStatement->rowCount();
 
@@ -14,6 +14,7 @@ if ($count > 0) {
         extract($row);
 
         $item = array(
+            "id" => $id,
             "latitude" => $latitude,
             "longitude" => $longitude,
             "tooltip" => $tooltip
@@ -30,4 +31,4 @@ if ($count > 0) {
 }
 
 http_response_code(404);
-echo json_encode(["success" => false, "message" => "No itanotations found."]);
+echo json_encode(["success" => false, "message" => "No anotations found."]);

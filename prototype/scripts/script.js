@@ -49,6 +49,15 @@ viewer.on('click', (e, data) => {
     }
 });
 
+markersPlugin.on('select-marker', function(e, marker, data) {
+    if (marker.data && marker.data.generated) {
+      if (data.dblclick) {
+        markersPlugin.removeMarker(marker);
+        removeAnotationMarker(marker);
+      } 
+    }
+  });
+
 // Trigger sample animation
 viewer.animate({
     longitude: Math.PI / 2,
@@ -65,6 +74,7 @@ function saveAnotationMarker(marker) {
     const serverEndpoint = "../server/create-anotation.php";
 
     const serverData = {
+        id: marker.id,
         longitude: marker.longitude,
         latitute: marker.latitude,
         tooltip: marker.tooltip,
@@ -74,6 +84,30 @@ function saveAnotationMarker(marker) {
     fetch(serverEndpoint, {
         method: 'POST',
         body: JSON.stringify(marker)
+    })
+        .then(response => response.json())
+        .then(response => {
+            console.log(response);
+            if (response.success === true && response.message) {
+                // Handle success
+            } else if (response.success === false && response.message) {
+                // Handle error
+            }
+        });
+}
+
+function removeAnotationMarker(marker) {
+    console.log(marker);
+    const serverEndpoint = "../server/delete-anotation.php";
+
+    const serverData = {
+        id: marker.id
+    }
+    console.log(serverData);
+
+    fetch(serverEndpoint, {
+        method: 'POST',
+        body: JSON.stringify(serverData)
     })
         .then(response => response.json())
         .then(response => {
@@ -97,7 +131,7 @@ function getAllAnotations(markersPlugin) {
             if (response.success === true && response.result) {
                 response.result.forEach((marker) => {
                     markersPlugin.addMarker({
-                        id: '#' + Math.random(),
+                        id: marker.id,
                         latitude: marker.latitude,
                         longitude: marker.longitude,
                         tooltip: marker.tooltip,
