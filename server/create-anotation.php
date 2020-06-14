@@ -6,13 +6,17 @@ $id = $phpInput["id"];
 $latitude = $phpInput["latitude"];
 $longitude = $phpInput["longitude"];
 $tooltip = $phpInput["tooltip"];
+$panoramaImage = $phpInput["panoramaImage"];
+$anotationImage = $phpInput["anotationImage"];
 
 require_once "./src/Anotation.php";
 $anotation = new Anotation(
     $id,
     $latitude,
     $longitude,
-    $tooltip
+    $tooltip,
+    $panoramaImage,
+    $anotationImage
 );
 
 try {

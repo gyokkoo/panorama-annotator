@@ -2,7 +2,7 @@
 
 require_once "./src/Anotation.php";
 
-$anotation = new Anotation('', 0, 0, '');
+$anotation = new Anotation('', 0, 0, '', '', '');
 $readStatement = $anotation->read();
 $count = $readStatement->rowCount();
 
@@ -10,14 +10,16 @@ if ($count > 0) {
     $anotations = array();
     $anotations["result"] = array();
 
-    while ($row = $readStatement->fetch(PDO::FETCH_ASSOC)){
+    while ($row = $readStatement->fetch(PDO::FETCH_ASSOC)) {
         extract($row);
 
         $item = array(
             "id" => $id,
             "latitude" => $latitude,
             "longitude" => $longitude,
-            "tooltip" => $tooltip
+            "tooltip" => $tooltip,
+            "panoramaImage" => $panoramaImage,
+            "anotationImage" => $anotationImage
         );
 
         array_push($anotations["result"], $item);

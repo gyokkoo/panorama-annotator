@@ -6,13 +6,17 @@ class Anotation
     private $latitude;
     private $longitude;
     private $tooltip;
+    private $panoramaImage;
+    private $anotationImage;
 
-    public function __construct($id, $latitude, $longitude, $tooltip)
+    public function __construct($id, $latitude, $longitude, $tooltip, $panoramaImage, $anotationImage)
     {
         $this->id = $id;
         $this->latitude = $latitude;
         $this->longitude = $longitude;
         $this->tooltip = $tooltip;
+        $this->panoramaImage = $panoramaImage;
+        $this->anotationImage = $anotationImage;
     }
 
     public function validate(): void
@@ -29,8 +33,8 @@ class Anotation
         $connection = $database->getConnection();
 
         $insertStatement = $connection->prepare(
-            "INSERT INTO `anotations-table` (id, latitude, longitude, tooltip)
-                       VALUES (:id, :latitude, :longitude, :tooltip)"
+            "INSERT INTO `anotations-table` (id, latitude, longitude, tooltip, panoramaImage, anotationImage)
+                       VALUES (:id, :latitude, :longitude, :tooltip, :panoramaImage, :anotationImage)"
         );
 
         $insertResult = $insertStatement->execute([
@@ -38,6 +42,8 @@ class Anotation
             "latitude" => $this->latitude,
             "longitude" => $this->longitude,
             "tooltip" => $this->tooltip,
+            "panoramaImage" => $this->panoramaImage,
+            "anotationImage" => $this->anotationImage,
         ]);
 
         if (!$insertResult) {

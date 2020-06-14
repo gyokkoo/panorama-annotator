@@ -9,6 +9,8 @@ $anotation = new Anotation(
     $id,
     0,
     0,
+    '',
+    '',
     ''
 );
 
