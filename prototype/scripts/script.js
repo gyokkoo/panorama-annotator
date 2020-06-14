@@ -18,9 +18,8 @@ const viewer = new PhotoSphereViewer.Viewer({
 
 const markersPlugin = viewer.getPlugin(PhotoSphereViewer.MarkersPlugin);
 
-// Wait for panarama image to load before visualizing anotations
 viewer.once('ready', () => {
-    getAllAnotations(markersPlugin);
+    deleteAllData();
 });
 
 // Event triggered on panorama image click.
@@ -79,7 +78,7 @@ function saveAnotationMarker(marker) {
         latitute: marker.latitude,
         tooltip: marker.tooltip,
     }
-    console.log(serverData);
+    console.debug(serverData);
 
     fetch(serverEndpoint, {
         method: 'POST',
@@ -87,7 +86,7 @@ function saveAnotationMarker(marker) {
     })
         .then(response => response.json())
         .then(response => {
-            console.log(response);
+            console.debug(response);
             if (response.success === true && response.message) {
                 // Handle success
             } else if (response.success === false && response.message) {
@@ -97,13 +96,13 @@ function saveAnotationMarker(marker) {
 }
 
 function removeAnotationMarker(marker) {
-    console.log(marker);
+    console.debug(marker);
     const serverEndpoint = "../server/delete-anotation.php";
 
     const serverData = {
         id: marker.id
     }
-    console.log(serverData);
+    console.debug(serverData);
 
     fetch(serverEndpoint, {
         method: 'POST',
@@ -111,7 +110,7 @@ function removeAnotationMarker(marker) {
     })
         .then(response => response.json())
         .then(response => {
-            console.log(response);
+            console.debug(response);
             if (response.success === true && response.message) {
                 // Handle success
             } else if (response.success === false && response.message) {
@@ -122,31 +121,42 @@ function removeAnotationMarker(marker) {
 
 function getAllAnotations(markersPlugin) {
     const serverEndpoint = "../server/get-all-anotations.php";
-
-    fetch(serverEndpoint, {
+    
+    return fetch(serverEndpoint, {
         method: 'GET',
     })
         .then(response => response.json())
         .then(response => {
             if (response.success === true && response.result) {
-                response.result.forEach((marker) => {
-                    markersPlugin.addMarker({
-                        id: marker.id,
-                        latitude: marker.latitude,
-                        longitude: marker.longitude,
-                        tooltip: marker.tooltip,
-                        width: 32,
-                        height: 32,
-                        anchor: 'bottom center',
-                        image: 'https://photo-sphere-viewer.js.org/assets/pin-red.png',
-                        data: {
-                            generated: true
-                        }
-                    })
-                })
+                return JSON.stringify(response.result, null, 1);
             } else if (response.success === false && response.message) {
                 console.error(response.message);
             }
         });
+    
+}
 
+function generateFilename() {
+    let result           = 'panorama-anotation';
+    const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for ( var i = 0; i < 4; i++ ) {
+       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
+
+function deleteAllData(){
+    const serverEndpoint = "../server/delete-all-data.php";
+    fetch(serverEndpoint, {
+        method: 'PUT',
+    })
+        .then(response => response.json())
+        .then(response => {
+            if (response.success === true && response.result) {
+                console.debug('Deleted all data.');
+            } else if (response.success === false && response.message) {
+                console.error(response.message);
+            }
+        });
 }

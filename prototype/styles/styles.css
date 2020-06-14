@@ -3,3 +3,8 @@
     width: 70vw;
     height: 50vh;
 }
+
+#import-result {
+    height: 250px;
+    width: 400px;
+}

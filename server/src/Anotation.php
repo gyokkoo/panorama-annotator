@@ -79,5 +79,5 @@ class Anotation
 
         $deleteResult = $connection->prepare($deleteStatement);
         $deleteResult->execute();
-    }       
+    } 
 }
