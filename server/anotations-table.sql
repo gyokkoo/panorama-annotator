@@ -31,18 +31,15 @@ CREATE TABLE `anotations-table` (
   `id` varchar(120) NOT NULL,
   `latitude` double DEFAULT NULL,
   `longitude` double NOT NULL,
-  `tooltip` text NOT NULL
+  `tooltip` text NOT NULL,
+  `panoramaImage` text NOT NULL,
+  `anotationImage` text NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `anotations-table`
 --
-
-INSERT INTO `anotations-table` (`id`, `latitude`, `longitude`, `tooltip`) VALUES
-('#0.569888888888', -0.20850374218236, 0.42060290492939, 'I was here'),
-('#0.2112222222', -0.12728187819504, 0.55750237486562, 'Boo'),
-('#0.3335552445', -0.074742352349845, 0.03758439727677, 'I was here');
-COMMIT;
+-- TODO: ADD;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

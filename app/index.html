@@ -9,6 +9,8 @@
 
 	<link rel="stylesheet" href="styles/styles.css">
 
+	<script src="./scripts/server-api.js"></script>
+
 	<!-- Load Photo Sphere Viewer library -->
 	<script src="https://cdn.jsdelivr.net/npm/three/build/three.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/uevent@2/browser.min.js"></script>
@@ -18,7 +20,6 @@
 	<script src="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/plugins/markers.js"></script>
 	<!-- AWS SDK for Javascript -->
 	<!-- <script src="https://sdk.amazonaws.com/js/aws-sdk-2.179.0.min.js"></script> -->
-
 </head>
 
 <body>
@@ -31,7 +32,7 @@
 	<input type="file" id="import-files" value="Import" /><br />
 	<button id="import" onclick="importAnotations()">Import</button>
 	<textarea id="import-result">
-  
+
 	</textarea>
 
 	<!-- Load app scripts -->
