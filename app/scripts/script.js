@@ -10,11 +10,32 @@ const viewer = new PhotoSphereViewer.Viewer({
     plugins: [
         [PhotoSphereViewer.MarkersPlugin, {
             markers: [
-                // NOTE: Markers are shown on panorama in getAllAnotations() method
+                {
+                    // image marker that opens the panel when clicked
+                    id: 'image',
+                    longitude: 0.32,
+                    latitude: 0.11,
+                    image: 'https://photo-sphere-viewer.js.org/assets/pin-blue.png',
+                    width: 32,
+                    height: 32,
+                    anchor: 'bottom center',
+                    tooltip: 'Shareable anotation. <b>Click me!</b>',
+                    content: getShareableView(0.32, 0.11, "https://fmi-panorama-images.s3.amazonaws.com/02_panorama_small.jpg"),
+                },
+                // NOTE: Other markers are shown on panorama in getAllAnotations() method
             ],
         }],
     ],
 });
+
+function getShareableView(longitude, latitude, image) {
+    const url = `${window.location.href}/share-view/share.html?&x=${longitude}&y=${latitude}&img=${image}`
+    // TODO: Generate QR code and show it here.
+    return `
+        <h1>Share PIN copying this URL:</h1>
+        <a href="${url}" target="_blank">${url}</a>   
+    `
+}
 
 const markersPlugin = viewer.getPlugin(PhotoSphereViewer.MarkersPlugin);
 
@@ -57,11 +78,11 @@ markersPlugin.on('select-marker', function (e, marker, data) {
     }
 });
 
-// Trigger sample animation
+// Focus specific place
 viewer.animate({
-    longitude: Math.PI / 2,
-    latitude: '20deg',
-    zoom: 50,
+    longitude: 0.22,
+    latitude: 0.51,
+    zoom: 60,
     speed: '-2rpm',
 }).then(() => {
     console.debug('Animation completed.');
