@@ -28,12 +28,32 @@ const viewer = new PhotoSphereViewer.Viewer({
     ],
 });
 
+function generateQr(url) {
+    if (!url) {
+        console.error('URL is undefined. QR code cannot be generated from undefined.');
+        return;
+    }
+    const qrCodeCanvas = document.getElementById('qrCode');
+    if (!qrCodeCanvas) {
+        console.error('QR code canvas has not been found.');
+        return;
+    }
+    const qrCode = new QRious({
+        element: qrCodeCanvas,
+        value: url,
+        size: 250,
+        background: 'white',
+        foreground: 'black'
+    });
+}
+
 function getShareableView(longitude, latitude, image) {
     const url = `${window.location.href}/share-view/share.html?&x=${longitude}&y=${latitude}&img=${image}`
-    // TODO: Generate QR code and show it here.
+
     return `
         <h1>Share PIN copying this URL:</h1>
-        <a href="${url}" target="_blank">${url}</a>   
+        <a href="${url}" target="_blank" id="get-shareable-url">${url}</a>   
+        <canvas id="qrCode"></canvas>
     `
 }
 
@@ -46,7 +66,6 @@ viewer.once('ready', () => {
 // Event triggered on panorama image click.
 viewer.on('click', (e, data) => {
     console.debug(`${data.rightclick ? 'right clicked' : 'clicked'} at longitude: ${data.longitude} latitude: ${data.latitude}`);
-
     if (!data.rightclick) {
         // Add red Pin annotation on left click.
         const marker = {
@@ -75,6 +94,12 @@ markersPlugin.on('select-marker', function (e, marker, data) {
             markersPlugin.removeMarker(marker);
             removeAnotationMarker(marker);
         }
+    }
+    if (!data.rightclick) {
+        setTimeout(() => {
+            const url = document.getElementById("get-shareable-url").innerHTML;
+            generateQr(url);
+        }, 0);
     }
 });
 
