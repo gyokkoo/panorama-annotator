@@ -20,7 +20,10 @@ const viewer = new PhotoSphereViewer.Viewer({
                     height: 32,
                     anchor: 'bottom center',
                     tooltip: 'Shareable anotation. <b>Click me!</b>',
-                    content: getShareableView(0.32, 0.11, "https://fmi-panorama-images.s3.amazonaws.com/02_panorama_small.jpg"),
+                    content: getShareableView('image', 0.32, 0.11, "https://fmi-panorama-images.s3.amazonaws.com/02_panorama_small.jpg"),
+                    data: {
+                        generated: true
+                    }
                 },
                 // NOTE: Other markers are shown on panorama in getAllAnotations() method
             ],
@@ -47,11 +50,17 @@ function generateQr(url) {
     });
 }
 
-function getShareableView(longitude, latitude, image) {
+function getShareableView(id, longitude, latitude, image) {
     const url = `${window.location.href}/share-view/share.html?&x=${longitude}&y=${latitude}&img=${image}`
 
     return `
-        <h1>Share PIN copying this URL:</h1>
+        <form onsubmit="changeTooltip(event)">
+            <div id="pin-id">${id}</div>
+            <label for="fname">Change tooltip text</label>
+            <input type="text" id="pin-tooltip" name="pin-tooltip">
+            <input type="submit">
+        </div>
+        <h2>Share PIN copying this URL:</h2>s
         <a href="${url}" target="_blank" id="get-shareable-url">${url}</a>   
         <canvas id="qrCode"></canvas>
     `
@@ -60,7 +69,11 @@ function getShareableView(longitude, latitude, image) {
 const markersPlugin = viewer.getPlugin(PhotoSphereViewer.MarkersPlugin);
 
 viewer.once('ready', () => {
-    deleteAllData();
+    getAllAnotations(markersPlugin).then(markersData => {
+        if (markersData) {
+            addMarkers(JSON.parse(markersData));
+        }
+    });
 });
 
 // Event triggered on panorama image click.
@@ -76,7 +89,7 @@ viewer.on('click', (e, data) => {
             width: 32,
             height: 32,
             anchor: 'bottom center',
-            tooltip: 'I was here',
+            tooltip: 'Generated pin, right click to make it shareable',
             data: {
                 generated: true
             }
@@ -93,14 +106,21 @@ markersPlugin.on('select-marker', function (e, marker, data) {
         if (data.dblclick) {
             markersPlugin.removeMarker(marker);
             removeAnotationMarker(marker);
+        } else if (data.rightclick) {
+            markersPlugin.updateMarker({
+                id: marker.id,
+                image: 'https://photo-sphere-viewer.js.org/assets/pin-blue.png',
+                tooltip: 'Shareable anotation. <b>Click me!</b>',
+                content: getShareableView(marker.id, marker.config.longitude, marker.config.latitude, "https://fmi-panorama-images.s3.amazonaws.com/02_panorama_small.jpg"),
+            });
         }
     }
-    if (!data.rightclick) {
-        setTimeout(() => {
-            const url = document.getElementById("get-shareable-url").innerHTML;
-            generateQr(url);
-        }, 0);
-    }
+    setTimeout(() => {
+        const url = document.getElementById("get-shareable-url");
+        if (url) {
+            generateQr(url.innerHTML);
+        }
+    }, 0);
 });
 
 // Focus specific place
@@ -114,3 +134,15 @@ viewer.animate({
 
     // API specs: https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API 
 });
+
+function changeTooltip(event) {
+    event.preventDefault();
+    const pinId = document.getElementById("pin-id").innerHTML;
+    const tooltip = document.getElementById("pin-tooltip").value;
+    if (!pinId || !tooltip) {
+        console.error("Could not find pinId or pin tooltip!");
+    }
+
+    // TODO: Send request to server!
+    console.debug("change tooltip! " + pinId + " " + tooltip);
+}
