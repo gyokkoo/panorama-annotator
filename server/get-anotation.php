@@ -3,12 +3,11 @@
 require_once "./src/Anotation.php";
 
 $url = $_SERVER["REQUEST_URI"];
-$url_components = parse_url($url); 
- 
-parse_str($url_components['query'], $params); 
-      
+$url_components = parse_url($url);
+
+parse_str($url_components['query'], $params);
+
 $id = $params['id'];
-var_dump($id);
 
 $anotation = new Anotation(
     $id,
@@ -19,17 +18,12 @@ $anotation = new Anotation(
     ''
 );
 
-$getResult = $anotation->get();
+$result = $anotation->readAnotation();
 
-if (!$getResult) {
+if ($result == null) {
     http_response_code(404);
     echo json_encode(["success" => false, "message" => "Could not find anotation!"]);
 } else {
     http_response_code(200);
-    $result = array(
-        "id" =>  $getResult['id'],
-        "latitude" => $getResult['latitude'],
-        "longitude" => $getResult['longitude']
-    );
     echo json_encode(["success" => true, "message" => "Found anotation!", "result" => $result]);
 }

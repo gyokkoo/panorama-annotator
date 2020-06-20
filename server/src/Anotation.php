@@ -60,14 +60,14 @@ class Anotation
         }
     }
 
-    public function get()
+    public function readAnotation()
     {
         require_once "./src/Database.php";
 
         $database = new Database();
         $connection = $database->getConnection();
 
-        $getStatement = "SELECT * FROM `anotations-table` WHERE id = :id  LIMIT0,1";
+        $getStatement = "SELECT * FROM `anotations-table` WHERE id = :id  LIMIT 0,1";
         $getResult = $connection->prepare($getStatement);
 
         // Sanitize
@@ -82,6 +82,17 @@ class Anotation
         $this->tooltip = $row['tooltip'];
         $this->panoramaImage = $row['panoramaImage'];
         $this->anotationImage = $row['anotationImage'];
+
+        $result = array(
+            "id" =>  $this->id,
+            "latitude" => $this->latitude,
+            "longitude" => $this->longitude,
+            "tooltip" => $this->tooltip,
+            "panoramaImage" => $this->panoramaImage,
+            "anotationImage" => $this->anotationImage
+        );
+
+        return $result;
     }
 
     public function read()

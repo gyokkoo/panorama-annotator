@@ -17,47 +17,52 @@ fetch((getAnotationByIdEndpoint), {
     .then(response => {
         console.debug(response);
         if (response.success === true && response.message) {
-            // Handle success
+            initializePhotoSphere(response.result);
         } else if (response.success === false && response.message) {
             // Handle error
         }
     });
 
-const viewer = new PhotoSphereViewer.Viewer({
-    panorama: img,
-    container: 'photosphere',
-    caption: 'Sample mountain panorama',
-    loadingImg: 'https://photo-sphere-viewer.js.org/assets/photosphere-logo.gif',
-    navbar: 'autorotate zoom download caption fullscreen',
-    defaultLat: 0.3,
-    mousewheel: true,
-    touchmoveTwoFingers: true,
-    plugins: [
-        [PhotoSphereViewer.MarkersPlugin, {
-            markers: [
-                {
-                    // image marker that opens the panel when clicked
-                    id: "#" + Math.random(),
-                    longitude: x,
-                    latitude: y,
-                    image: 'https://photo-sphere-viewer.js.org/assets/pin-blue.png',
-                    width: 32,
-                    height: 32,
-                    anchor: 'bottom center',
-                    tooltip: 'Sample toolip texts',
-                },
-                // NOTE: Other markers are shown on panorama in getAllAnotations() method
-            ],
-        }],
-    ],
-});
 
-// Focus specific place
-viewer.animate({
-    longitude: x,
-    latitude: y,
-    zoom: 60,
-    speed: '-2rpm',
-}).then(() => {
-    console.debug('Animation completed.');
-});
+function initializePhotoSphere(markerData) {
+    const viewer = new PhotoSphereViewer.Viewer({
+        panorama: markerData.panoramaImage,
+        container: 'photosphere',
+        caption: 'Sample mountain panorama',
+        loadingImg: 'https://photo-sphere-viewer.js.org/assets/photosphere-logo.gif',
+        navbar: 'autorotate zoom download caption fullscreen',
+        defaultLat: 0.3,
+        mousewheel: true,
+        touchmoveTwoFingers: true,
+        plugins: [
+            [PhotoSphereViewer.MarkersPlugin, {
+                markers: [
+                    {
+                        // image marker that opens the panel when clicked
+                        id: markerData.id,
+                        longitude: markerData.longitude,
+                        latitude: markerData.latitude,
+                        image: markerData.anotationImage,
+                        width: 32,
+                        height: 32,
+                        anchor: 'bottom center',
+                        tooltip: markerData.tooltip,
+                    },
+                    // NOTE: Other markers are shown on panorama in getAllAnotations() method
+                ],
+            }],
+        ],
+    });
+
+    console.log(markerData);
+
+    // Focus specific place
+    viewer.animate({
+        longitude: markerData.latitude,
+        latitude: markerData.longitude,
+        zoom: 60,
+        speed: '-2rpm',
+    }).then(() => {
+        console.debug('Animation completed.');
+    });
+}
