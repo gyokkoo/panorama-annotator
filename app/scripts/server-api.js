@@ -55,6 +55,32 @@ function removeAnotationMarker(marker) {
         });
 }
 
+function editAnotation(id, tooltip) {
+    const serverData = {
+        id: id,
+        longitude: '',
+        latitude: '',
+        panoramaImage: '',
+        anotationImage: '',
+        tooltip: tooltip
+    }
+    console.debug(serverData);
+
+    fetch(serverEndpoint + "edit-anotation.php", {
+        method: 'PUT',
+        body: JSON.stringify(serverData)
+    })
+        .then(response => response.json())
+        .then(response => {
+            console.debug(response);
+            if (response.success === true && response.message) {
+                // Handle success  
+            } else if (response.success === false && response.message) {
+                console.error(response.message);
+            }
+        });
+}
+
 function getAllAnotations(markersPlugin) {
     return fetch(serverEndpoint + "get-all-anotations.php", {
         method: 'GET',
