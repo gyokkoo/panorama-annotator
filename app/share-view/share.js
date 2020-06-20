@@ -1,14 +1,27 @@
+const serverEndpoint = "../../../server/"
 const urlParams = new URLSearchParams(window.location.href);
 
-const x = urlParams.get('x');
-const y = urlParams.get('y');
-const img = urlParams.get('img');
+const id = urlParams.get('id');
 
-console.log(`${x} -  ${y}  - ${img}`);
+console.log(`${id}`);
 
-if (!x || !y || !img) {
+if (!id) {
     throw new Error("Invalid url params, please use valid url!");
 }
+
+const getAnotationByIdEndpoint = serverEndpoint + `get-anotation.php?id=${encodeURIComponent(id)}`;
+fetch((getAnotationByIdEndpoint), {
+    method: 'GET'
+})
+    .then(response => response.json())
+    .then(response => {
+        console.debug(response);
+        if (response.success === true && response.message) {
+            // Handle success
+        } else if (response.success === false && response.message) {
+            // Handle error
+        }
+    });
 
 const viewer = new PhotoSphereViewer.Viewer({
     panorama: img,

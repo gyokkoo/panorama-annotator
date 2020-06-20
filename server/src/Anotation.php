@@ -60,6 +60,30 @@ class Anotation
         }
     }
 
+    public function get()
+    {
+        require_once "./src/Database.php";
+
+        $database = new Database();
+        $connection = $database->getConnection();
+
+        $getStatement = "SELECT * FROM `anotations-table` WHERE id = :id  LIMIT0,1";
+        $getResult = $connection->prepare($getStatement);
+
+        // Sanitize
+        $this->id = htmlspecialchars(strip_tags($this->id));
+        $getResult->bindParam(':id', $this->id);
+        $getResult->execute();
+        
+        $row = $getResult->fetch(PDO::FETCH_ASSOC);
+        $this->id = $row['id'];
+        $this->latitude = $row['latitude'];
+        $this->longitude = $row['longitude'];
+        $this->tooltip = $row['tooltip'];
+        $this->panoramaImage = $row['panoramaImage'];
+        $this->anotationImage = $row['anotationImage'];
+    }
+
     public function read()
     {
         require_once "./src/Database.php";
@@ -81,10 +105,15 @@ class Anotation
 
         $database = new Database();
         $connection = $database->getConnection();
+        
 
-        $deleteStatement = "DELETE FROM `anotations-table`  WHERE id = '$this->id'";
-
+        $deleteStatement = "DELETE FROM `anotations-table`  WHERE id = :id";
         $deleteResult = $connection->prepare($deleteStatement);
+
+        // Sanitize
+        $this->id = htmlspecialchars(strip_tags($this->id));
+        $deleteResult->bindParam(':id', $this->id);
+        
         $deleteResult->execute();
     }
 

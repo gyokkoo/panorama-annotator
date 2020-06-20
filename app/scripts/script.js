@@ -50,8 +50,8 @@ function generateQr(url) {
     });
 }
 
-function getShareableView(id, longitude, latitude, image) {
-    const url = `${window.location.href}/share-view/share.html?&x=${longitude}&y=${latitude}&img=${image}`
+function getShareableView(id) {
+    const url = `${window.location.href}/share-view/share.html?&id=${id}`
 
     return `
         <form onsubmit="changeTooltip(event)">
@@ -60,7 +60,7 @@ function getShareableView(id, longitude, latitude, image) {
             <input type="text" id="pin-tooltip" name="pin-tooltip">
             <input type="submit">
         </div>
-        <h2>Share PIN copying this URL:</h2>s
+        <h2>Share PIN copying this URL:</h2>
         <a href="${url}" target="_blank" id="get-shareable-url">${url}</a>   
         <canvas id="qrCode"></canvas>
     `
