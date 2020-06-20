@@ -20,7 +20,7 @@ const viewer = new PhotoSphereViewer.Viewer({
                     height: 32,
                     anchor: 'bottom center',
                     tooltip: 'Shareable anotation. <b>Click me!</b>',
-                    content: getShareableView(0.32, 0.11, "https://fmi-panorama-images.s3.amazonaws.com/02_panorama_small.jpg"),
+                    content: getShareableView('image', 0.32, 0.11, "https://fmi-panorama-images.s3.amazonaws.com/02_panorama_small.jpg"),
                     data: {
                         generated: true
                     }
@@ -50,16 +50,17 @@ function generateQr(url) {
     });
 }
 
-function getShareableView(longitude, latitude, image) {
+function getShareableView(id, longitude, latitude, image) {
     const url = `${window.location.href}/share-view/share.html?&x=${longitude}&y=${latitude}&img=${image}`
 
     return `
         <form onsubmit="changeTooltip(event)">
+            <div id="pin-id">${id}</div>
             <label for="fname">Change tooltip text</label>
             <input type="text" id="pin-tooltip" name="pin-tooltip">
             <input type="submit">
         </div>
-        <h2>Share PIN copying this URL:</h2>
+        <h2>Share PIN copying this URL:</h2>s
         <a href="${url}" target="_blank" id="get-shareable-url">${url}</a>   
         <canvas id="qrCode"></canvas>
     `
@@ -88,7 +89,7 @@ viewer.on('click', (e, data) => {
             width: 32,
             height: 32,
             anchor: 'bottom center',
-            tooltip: 'Generated ping, right click to make it shareable',
+            tooltip: 'Generated pin, right click to make it shareable',
             data: {
                 generated: true
             }
@@ -110,13 +111,15 @@ markersPlugin.on('select-marker', function (e, marker, data) {
                 id: marker.id,
                 image: 'https://photo-sphere-viewer.js.org/assets/pin-blue.png',
                 tooltip: 'Shareable anotation. <b>Click me!</b>',
-                content: getShareableView(marker.config.longitude, marker.config.latitude, "https://fmi-panorama-images.s3.amazonaws.com/02_panorama_small.jpg"),
+                content: getShareableView(marker.id, marker.config.longitude, marker.config.latitude, "https://fmi-panorama-images.s3.amazonaws.com/02_panorama_small.jpg"),
             });
         }
     }
     setTimeout(() => {
-        const url = document.getElementById("get-shareable-url").innerHTML;
-        generateQr(url);
+        const url = document.getElementById("get-shareable-url");
+        if (url) {
+            generateQr(url.innerHTML);
+        }
     }, 0);
 });
 
@@ -134,5 +137,12 @@ viewer.animate({
 
 function changeTooltip(event) {
     event.preventDefault();
-    console.debug("change tooltip!");
+    const pinId = document.getElementById("pin-id").innerHTML;
+    const tooltip = document.getElementById("pin-tooltip").value;
+    if (!pinId || !tooltip) {
+        console.error("Could not find pinId or pin tooltip!");
+    }
+
+    // TODO: Send request to server!
+    console.debug("change tooltip! " + pinId + " " + tooltip);
 }
