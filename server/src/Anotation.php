@@ -69,13 +69,14 @@ class Anotation
 
         $readStatement = "SELECT * FROM `anotations-table`";
         $readResult = $connection->prepare($readStatement);
-      
+
         $readResult->execute();
-      
+
         return $readResult;
     }
 
-    public function deleteFromDb(): void {
+    public function deleteFromDb(): void
+    {
         require_once "./src/Database.php";
 
         $database = new Database();
@@ -85,5 +86,35 @@ class Anotation
 
         $deleteResult = $connection->prepare($deleteStatement);
         $deleteResult->execute();
-    } 
+    }
+
+    public function edit(): bool
+    {
+        require_once "./src/Database.php";
+
+        $database = new Database();
+        $connection = $database->getConnection();
+
+        $editStatement = "UPDATE
+                       `anotations-table`
+                    SET
+                        tooltip = :tooltip
+                    WHERE
+                        id = :id";
+        $editResult = $connection->prepare($editStatement);
+
+        // Sanitize
+        $this->tooltip = htmlspecialchars(strip_tags($this->tooltip));
+
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+        // Bind new values
+        $editResult->bindParam(':tooltip', $this->tooltip);
+        $editResult->bindParam(':id', $this->id);
+
+        if ($editResult->execute()) {
+            return true;
+        }
+        return false;
+    }
 }

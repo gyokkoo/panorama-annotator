@@ -142,7 +142,11 @@ function changeTooltip(event) {
     if (!pinId || !tooltip) {
         console.error("Could not find pinId or pin tooltip!");
     }
-
+    editAnotation(pinId, tooltip);
+    markersPlugin.updateMarker({
+        id: pinId,
+        tooltip: tooltip
+    });
     // TODO: Send request to server!
     console.debug("change tooltip! " + pinId + " " + tooltip);
 }
