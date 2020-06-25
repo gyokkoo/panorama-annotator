@@ -60,7 +60,7 @@ class Anotation
         }
     }
 
-    public function get()
+    public function readAnotation()
     {
         require_once "./src/Database.php";
 
@@ -83,7 +83,20 @@ class Anotation
         $this->panoramaImage = $row['panoramaImage'];
         $this->anotationImage = $row['anotationImage'];
 
+<<<<<<< HEAD
         return $row;
+=======
+        $result = array(
+            "id" =>  $this->id,
+            "latitude" => $this->latitude,
+            "longitude" => $this->longitude,
+            "tooltip" => $this->tooltip,
+            "panoramaImage" => $this->panoramaImage,
+            "anotationImage" => $this->anotationImage
+        );
+
+        return $result;
+>>>>>>> master
     }
 
     public function read()

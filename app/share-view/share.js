@@ -18,7 +18,6 @@ fetch((getAnotationByIdEndpoint), {
         console.debug(response);
         if (response.success === true && response.message) {
             initializePanoramaImage(response.result);
-            // Handle success
         } else if (response.success === false && response.message) {
             // Handle error
         }
