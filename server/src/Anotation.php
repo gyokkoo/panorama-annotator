@@ -82,6 +82,8 @@ class Anotation
         $this->tooltip = $row['tooltip'];
         $this->panoramaImage = $row['panoramaImage'];
         $this->anotationImage = $row['anotationImage'];
+
+        return $row;
     }
 
     public function read()
@@ -96,7 +98,7 @@ class Anotation
 
         // Sanitize
         $this->panoramaImage = htmlspecialchars(strip_tags($this->panoramaImage));
-        $getResult->bindParam(':panoramaImage', $this->panoramaImage);
+        $readResult->bindParam(':panoramaImage', $this->panoramaImage);
 
         $readResult->execute();
 

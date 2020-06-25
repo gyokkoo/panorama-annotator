@@ -16,7 +16,7 @@ function exportAnotations() {
 
 function addMarkers(data) {
     if (!data) {
-        console.error("No markers available.");
+        console.error('No markers available.');
         return;
     }
     data.forEach((marker) => {

@@ -8,7 +8,6 @@ $url_components = parse_url($url);
 parse_str($url_components['query'], $params); 
       
 $id = $params['id'];
-var_dump($id);
 
 $anotation = new Anotation(
     $id,
@@ -27,9 +26,12 @@ if (!$getResult) {
 } else {
     http_response_code(200);
     $result = array(
-        "id" =>  $getResult['id'],
+        "id" => $getResult['id'],
         "latitude" => $getResult['latitude'],
-        "longitude" => $getResult['longitude']
+        "longitude" => $getResult['longitude'],
+        "tooltip" => $getResult['tooltip'],
+        "panoramaImage" => $getResult['panoramaImage'],
+        "anotationImage" => $getResult['anotationImage']
     );
     echo json_encode(["success" => true, "message" => "Found anotation!", "result" => $result]);
 }

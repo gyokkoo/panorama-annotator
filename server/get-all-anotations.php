@@ -7,7 +7,6 @@ $url_components = parse_url($url);
 parse_str($url_components['query'], $params); 
       
 $panoramaImage = $params['panoramaImage'];
-var_dump($panoramaImage);
 
 $anotation = new Anotation(
     '',
