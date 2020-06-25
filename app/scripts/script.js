@@ -31,6 +31,15 @@ const viewer = new PhotoSphereViewer.Viewer({
     ],
 });
 
+const markersPlugin = viewer.getPlugin(PhotoSphereViewer.MarkersPlugin);
+
+function updateImage(panoramaImageName) {
+    console.log(panoramaImageName);
+    const s3BucketEndpoint = 'https://fmi-panorama-images.s3.amazonaws.com/';
+    viewer.setPanorama(s3BucketEndpoint + panoramaImageName);
+    getAllAnotations(markersPlugin);
+}
+
 function generateQr(url) {
     if (!url) {
         console.error('URL is undefined. QR code cannot be generated from undefined.');
@@ -65,8 +74,6 @@ function getShareableView(id) {
         <canvas id="qrCode"></canvas>
     `
 }
-
-const markersPlugin = viewer.getPlugin(PhotoSphereViewer.MarkersPlugin);
 
 viewer.once('ready', () => {
     getAllAnotations(markersPlugin).then(markersData => {

@@ -81,8 +81,8 @@ function editAnotation(id, tooltip) {
         });
 }
 
-function getAllAnotations(markersPlugin) {
-    return fetch(serverEndpoint + "get-all-anotations.php", {
+function getAllAnotations(markersPlugin, panoramaImage) {
+    return fetch(serverEndpoint + `get-all-anotations.php?panoramaImage=${panoramaImage}`, {
         method: 'GET',
     })
         .then(response => response.json())

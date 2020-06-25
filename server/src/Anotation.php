@@ -67,7 +67,7 @@ class Anotation
         $database = new Database();
         $connection = $database->getConnection();
 
-        $getStatement = "SELECT * FROM `anotations-table` WHERE id = :id  LIMIT0,1";
+        $getStatement = "SELECT * FROM `anotations-table` WHERE id = :id  LIMIT 0,1";
         $getResult = $connection->prepare($getStatement);
 
         // Sanitize
@@ -91,8 +91,12 @@ class Anotation
         $database = new Database();
         $connection = $database->getConnection();
 
-        $readStatement = "SELECT * FROM `anotations-table`";
+        $readStatement = "SELECT * FROM `anotations-table` WHERE panoramaImage = :panoramaImage";
         $readResult = $connection->prepare($readStatement);
+
+        // Sanitize
+        $this->panoramaImage = htmlspecialchars(strip_tags($this->panoramaImage));
+        $getResult->bindParam(':panoramaImage', $this->panoramaImage);
 
         $readResult->execute();
 
