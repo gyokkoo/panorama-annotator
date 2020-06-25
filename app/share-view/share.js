@@ -3,11 +3,7 @@ const urlParams = new URLSearchParams(window.location.href);
 
 const id = urlParams.get('id');
 
-<<<<<<< HEAD
 console.debug(`${id}`);
-=======
-console.log(`${id}`);
->>>>>>> c08dfb3... Add getAnotation by id functionality
 
 if (!id) {
     throw new Error("Invalid url params, please use valid url!");
@@ -21,47 +17,12 @@ fetch((getAnotationByIdEndpoint), {
     .then(response => {
         console.debug(response);
         if (response.success === true && response.message) {
-<<<<<<< HEAD
             initializePanoramaImage(response.result);
-=======
             // Handle success
->>>>>>> c08dfb3... Add getAnotation by id functionality
         } else if (response.success === false && response.message) {
             // Handle error
         }
     });
-<<<<<<< HEAD
-=======
-
-const viewer = new PhotoSphereViewer.Viewer({
-    panorama: img,
-    container: 'photosphere',
-    caption: 'Sample mountain panorama',
-    loadingImg: 'https://photo-sphere-viewer.js.org/assets/photosphere-logo.gif',
-    navbar: 'autorotate zoom download caption fullscreen',
-    defaultLat: 0.3,
-    mousewheel: true,
-    touchmoveTwoFingers: true,
-    plugins: [
-        [PhotoSphereViewer.MarkersPlugin, {
-            markers: [
-                {
-                    // image marker that opens the panel when clicked
-                    id: "#" + Math.random(),
-                    longitude: x,
-                    latitude: y,
-                    image: 'https://photo-sphere-viewer.js.org/assets/pin-blue.png',
-                    width: 32,
-                    height: 32,
-                    anchor: 'bottom center',
-                    tooltip: 'Sample toolip texts',
-                },
-                // NOTE: Other markers are shown on panorama in getAllAnotations() method
-            ],
-        }],
-    ],
-});
->>>>>>> c08dfb3... Add getAnotation by id functionality
 
 function initializePanoramaImage(data) {
     const viewer = new PhotoSphereViewer.Viewer({
