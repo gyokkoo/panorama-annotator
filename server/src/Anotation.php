@@ -67,7 +67,11 @@ class Anotation
         $database = new Database();
         $connection = $database->getConnection();
 
+<<<<<<< HEAD
         $getStatement = "SELECT * FROM `anotations-table` WHERE id = :id  LIMIT 0,1";
+=======
+        $getStatement = "SELECT * FROM `anotations-table` WHERE id = :id  LIMIT0,1";
+>>>>>>> c08dfb3... Add getAnotation by id functionality
         $getResult = $connection->prepare($getStatement);
 
         // Sanitize
@@ -82,8 +86,11 @@ class Anotation
         $this->tooltip = $row['tooltip'];
         $this->panoramaImage = $row['panoramaImage'];
         $this->anotationImage = $row['anotationImage'];
+<<<<<<< HEAD
 
         return $row;
+=======
+>>>>>>> c08dfb3... Add getAnotation by id functionality
     }
 
     public function read()
