@@ -23,11 +23,13 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 
 	<!-- AWS SDK for Javascript -->
-	<!-- <script src="https://sdk.amazonaws.com/js/aws-sdk-2.179.0.min.js"></script> -->
+	<script src="https://sdk.amazonaws.com/js/aws-sdk-2.704.0.min.js"></script>
 </head>
 
 <body>
 	<h1>Panorama anotator</h1>
+
+	<!-- TODO: Create a dropdown here -->
 
 	<div class="panorama-wrapper">
 		<div id="photosphere"></div>
@@ -37,9 +39,11 @@
 	<button id="import" onclick="importAnotations()">Import</button>
 	<textarea id="import-result">
 	</textarea>
-
 	<script src="scripts/script.js"></script>
+	<script src="scripts/s3-get-images.js"></script>
+    <script>listAlbums();</script>
 	<script src="scripts/export-import.js"></script>
+	<div id="viewer"></div>
 </body>
 
 </html>

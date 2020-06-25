@@ -25,5 +25,13 @@ if ($result == null) {
     echo json_encode(["success" => false, "message" => "Could not find anotation!"]);
 } else {
     http_response_code(200);
+    $result = array(
+        "id" => $getResult['id'],
+        "latitude" => $getResult['latitude'],
+        "longitude" => $getResult['longitude'],
+        "tooltip" => $getResult['tooltip'],
+        "panoramaImage" => $getResult['panoramaImage'],
+        "anotationImage" => $getResult['anotationImage']
+    );
     echo json_encode(["success" => true, "message" => "Found anotation!", "result" => $result]);
 }

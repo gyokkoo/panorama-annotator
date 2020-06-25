@@ -1,8 +1,22 @@
 <?php
 
 require_once "./src/Anotation.php";
+$url = $_SERVER["REQUEST_URI"];
+$url_components = parse_url($url); 
+ 
+parse_str($url_components['query'], $params); 
+      
+$panoramaImage = $params['panoramaImage'];
 
-$anotation = new Anotation('', 0, 0, '', '', '');
+$anotation = new Anotation(
+    '',
+    0,
+    0,
+    '',
+    $panoramaImage,
+    ''
+);
+
 $readStatement = $anotation->read();
 
 $anotations = array();

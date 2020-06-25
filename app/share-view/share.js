@@ -3,7 +3,7 @@ const urlParams = new URLSearchParams(window.location.href);
 
 const id = urlParams.get('id');
 
-console.log(`${id}`);
+console.debug(`${id}`);
 
 if (!id) {
     throw new Error("Invalid url params, please use valid url!");
@@ -17,16 +17,15 @@ fetch((getAnotationByIdEndpoint), {
     .then(response => {
         console.debug(response);
         if (response.success === true && response.message) {
-            initializePhotoSphere(response.result);
+            initializePanoramaImage(response.result);
         } else if (response.success === false && response.message) {
             // Handle error
         }
     });
 
-
-function initializePhotoSphere(markerData) {
+function initializePanoramaImage(data) {
     const viewer = new PhotoSphereViewer.Viewer({
-        panorama: markerData.panoramaImage,
+        panorama: data.panoramaImage,
         container: 'photosphere',
         caption: 'Sample mountain panorama',
         loadingImg: 'https://photo-sphere-viewer.js.org/assets/photosphere-logo.gif',
@@ -39,14 +38,14 @@ function initializePhotoSphere(markerData) {
                 markers: [
                     {
                         // image marker that opens the panel when clicked
-                        id: markerData.id,
-                        longitude: markerData.longitude,
-                        latitude: markerData.latitude,
-                        image: markerData.anotationImage,
+                        id: data.id,
+                        longitude: data.longitude,
+                        latitude: data.latitude,
+                        image: data.anotationImage,
                         width: 32,
                         height: 32,
                         anchor: 'bottom center',
-                        tooltip: markerData.tooltip,
+                        tooltip: data.tooltip,
                     },
                     // NOTE: Other markers are shown on panorama in getAllAnotations() method
                 ],
@@ -54,12 +53,10 @@ function initializePhotoSphere(markerData) {
         ],
     });
 
-    console.log(markerData);
-
     // Focus specific place
     viewer.animate({
-        longitude: markerData.latitude,
-        latitude: markerData.longitude,
+        longitude: data.longitude,
+        latitude: data.latitude,
         zoom: 60,
         speed: '-2rpm',
     }).then(() => {

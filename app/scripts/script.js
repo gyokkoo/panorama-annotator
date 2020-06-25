@@ -1,5 +1,6 @@
+const cachedImage = window.localStorage.getItem("panorama-image");
 const viewer = new PhotoSphereViewer.Viewer({
-    panorama: 'https://fmi-panorama-images.s3.amazonaws.com/02_panorama_small.jpg',
+    panorama: cachedImage ? cachedImage : "https://fmi-panorama-images.s3.amazonaws.com/01_panorama.jpg",
     container: 'photosphere',
     caption: 'Sample mountain panorama',
     loadingImg: 'https://photo-sphere-viewer.js.org/assets/photosphere-logo.gif',
@@ -10,26 +11,27 @@ const viewer = new PhotoSphereViewer.Viewer({
     plugins: [
         [PhotoSphereViewer.MarkersPlugin, {
             markers: [
-                {
-                    // image marker that opens the panel when clicked
-                    id: 'image',
-                    longitude: 0.32,
-                    latitude: 0.11,
-                    image: 'https://photo-sphere-viewer.js.org/assets/pin-blue.png',
-                    width: 32,
-                    height: 32,
-                    anchor: 'bottom center',
-                    tooltip: 'Shareable anotation. <b>Click me!</b>',
-                    content: getShareableView('image', 0.32, 0.11, "https://fmi-panorama-images.s3.amazonaws.com/02_panorama_small.jpg"),
-                    data: {
-                        generated: true
-                    }
-                },
                 // NOTE: Other markers are shown on panorama in getAllAnotations() method
             ],
         }],
     ],
 });
+
+const markersPlugin = viewer.getPlugin(PhotoSphereViewer.MarkersPlugin);
+
+function updateImage(panoramaImageName) {
+    console.log(panoramaImageName);
+    const panoramaImgEndpoint = 'https://fmi-panorama-images.s3.amazonaws.com/' + panoramaImageName;
+    viewer.setPanorama(panoramaImgEndpoint);
+    window.localStorage.setItem("panorama-image", panoramaImgEndpoint);
+
+    getAllAnotations().then(markersData => {
+        markersPlugin.clearMarkers();
+        if (markersData) {
+            addMarkers(JSON.parse(markersData));
+        }
+    });
+}
 
 function generateQr(url) {
     if (!url) {
@@ -66,10 +68,8 @@ function getShareableView(id) {
     `
 }
 
-const markersPlugin = viewer.getPlugin(PhotoSphereViewer.MarkersPlugin);
-
 viewer.once('ready', () => {
-    getAllAnotations(markersPlugin).then(markersData => {
+    getAllAnotations().then(markersData => {
         if (markersData) {
             addMarkers(JSON.parse(markersData));
         }
@@ -147,6 +147,10 @@ function changeTooltip(event) {
         id: pinId,
         tooltip: tooltip
     });
-    // TODO: Send request to server!
-    console.debug("change tooltip! " + pinId + " " + tooltip);
+    setTimeout(() => {
+        const url = document.getElementById("get-shareable-url");
+        if (url) {
+            generateQr(url.innerHTML);
+        }
+    }, 0);
 }

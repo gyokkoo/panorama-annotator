@@ -83,16 +83,7 @@ class Anotation
         $this->panoramaImage = $row['panoramaImage'];
         $this->anotationImage = $row['anotationImage'];
 
-        $result = array(
-            "id" =>  $this->id,
-            "latitude" => $this->latitude,
-            "longitude" => $this->longitude,
-            "tooltip" => $this->tooltip,
-            "panoramaImage" => $this->panoramaImage,
-            "anotationImage" => $this->anotationImage
-        );
-
-        return $result;
+        return $row;
     }
 
     public function read()
@@ -102,8 +93,12 @@ class Anotation
         $database = new Database();
         $connection = $database->getConnection();
 
-        $readStatement = "SELECT * FROM `anotations-table`";
+        $readStatement = "SELECT * FROM `anotations-table` WHERE panoramaImage = :panoramaImage";
         $readResult = $connection->prepare($readStatement);
+
+        // Sanitize
+        $this->panoramaImage = htmlspecialchars(strip_tags($this->panoramaImage));
+        $readResult->bindParam(':panoramaImage', $this->panoramaImage);
 
         $readResult->execute();
 
