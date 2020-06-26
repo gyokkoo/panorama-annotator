@@ -63,9 +63,9 @@ function listAlbums() {
       const images = data.Contents.map(function(content) {
         const panorama = content.Key;
         return getHtml([
-            `<a href="#"onclick="updateImage('${panorama}')">`,
+            `<button onclick="updateImage('${panorama}')">`,
               panorama,
-            '</a>',
+            '</button>',
         ]);
       });
 
