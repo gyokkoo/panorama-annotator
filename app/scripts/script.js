@@ -1,3 +1,6 @@
+hideDropdown();
+hideImportArea();
+
 const cachedImage = window.localStorage.getItem("panorama-image");
 const viewer = new PhotoSphereViewer.Viewer({
     panorama: cachedImage ? cachedImage : "https://fmi-panorama-images.s3.amazonaws.com/01_panorama.jpg",
@@ -153,4 +156,28 @@ function changeTooltip(event) {
             generateQr(url.innerHTML);
         }
     }, 0);
+}
+
+function showDropdown(event) {
+    event.stopPropagation();
+    const panoramaDropdown = document.getElementById('panorama-images');
+    panoramaDropdown.style.display = 'block';
+}
+
+function hideDropdown() {
+    const panoramaDropdown = document.getElementById('panorama-images');
+    panoramaDropdown.style.display = 'none';
+}
+
+// Close the dropdown menu if the user clicks outside of it.
+window.onclick = () => {
+    hideDropdown();
+}
+
+function hideImportArea() {
+    document.getElementById('import-area').style.display = 'none';
+}
+
+function showImportArea() {
+    document.getElementById('import-area').style.display = 'block';
 }

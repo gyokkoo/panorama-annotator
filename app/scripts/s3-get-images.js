@@ -60,30 +60,19 @@ function listAlbums() {
         console.log(err);
       return alert('There was an error listing your albums: ' + err.message);
     } else {
-        // console.log(data.Content);
-      var images = data.Contents.map(function(content) {
-        var panorama = content.Key;
+      const images = data.Contents.map(function(content) {
+        const panorama = content.Key;
         return getHtml([
-          '<li>',
-            `<button style="margin:5px;" onclick="updateImage('${panorama}')">`,
+            `<a href="#"onclick="updateImage('${panorama}')">`,
               panorama,
-            '</button>',
-          '</li>'
+            '</a>',
         ]);
       });
-      var message = images.length ?
-        getHtml([
-          '<p>Click on a panorama image name to view it.</p>',
-        ]) :
-        '<p>No panorama images found.';
-      var htmlTemplate = [
-        '<h2>Panoramas</h2>',
-        message,
-        '<ul>',
-          getHtml(images),
-        '</ul>',
-      ]
-      document.getElementById('viewer').innerHTML = getHtml(htmlTemplate);
+
+      const divElement = document.createElement('div');
+      divElement.innerHTML = getHtml(images);
+
+      document.getElementById('panorama-images').appendChild(divElement);
     }
   });
 }

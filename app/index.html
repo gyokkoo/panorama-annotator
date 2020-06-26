@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/plugins/markers.css" />
 
 	<link rel="stylesheet" href="styles/styles.css">
+	<link rel="stylesheet" href="styles/dropdown.css">
 
 	<script src="./scripts/server-api.js"></script>
 
@@ -27,23 +28,36 @@
 </head>
 
 <body>
-	<h1>Panorama anotator</h1>
-
-	<!-- TODO: Create a dropdown here -->
+	<div class="header-wrapper">
+		<h1 class="page-title">Panorama anotator</h1>
+		<div class="dropdown">
+			<button class="panorama-dropdown button" type="button" data-toggle="dropdown"
+				onclick="showDropdown(event)">
+				Select panorama
+			<span class="caret"></span>
+			</button>
+			<ul id="panorama-images" class="dropdown-content">
+			</ul>
+		</div>
+	</div>
 
 	<div class="panorama-wrapper">
 		<div id="photosphere"></div>
 	</div>
-	<button id="export" onclick="exportAnotations()">Export anotations</button>
-	<input type="file" id="import-files" value="Import" /><br />
-	<button id="import" onclick="importAnotations()">Import</button>
-	<textarea id="import-result">
-	</textarea>
+
+	<button id="import-btn" class="button" onclick="showImportArea()">Import anotations</button>
+	<button id="export" class="button" onclick="exportAnotations()">Export anotations</button>
+	<div id="import-area">
+		<input type="file" id="import-files" value="Import" /><br />
+		<textarea id="import-result"></textarea>
+		<button onclick="importAnotations()">Import</button>
+		<button onclick="hideImportArea()">Close</button>
+	</div>
+
 	<script src="scripts/script.js"></script>
 	<script src="scripts/s3-get-images.js"></script>
-    <script>listAlbums();</script>
+	<script>listAlbums();</script>
 	<script src="scripts/export-import.js"></script>
-	<div id="viewer"></div>
 </body>
 
 </html>

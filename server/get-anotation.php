@@ -18,9 +18,9 @@ $anotation = new Anotation(
     ''
 );
 
-$result = $anotation->readAnotation();
+$getResult = $anotation->readAnotation();
 
-if ($result == null) {
+if ($getResult == null) {
     http_response_code(404);
     echo json_encode(["success" => false, "message" => "Could not find anotation!"]);
 } else {
