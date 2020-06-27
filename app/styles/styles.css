@@ -1,7 +1,9 @@
 /* the viewer container must have a defined size */
+
 #photosphere {
-    width: 70vw;
-    height: 50vh;
+    width: 85%;
+    height: 70vh;
+    margin-right: 200px;
 }
 
 #import-result {
@@ -11,4 +13,26 @@
 
 #pin-id {
     display: none;
+}
+
+.header-wrapper {
+    text-align: center;
+    padding-top: 30px;
+    padding-bottom: 5px;
+}
+
+.page-title {
+    display: inline-block;
+    color: gray;
+    font-family: 'Trocchi', serif;
+    font-size: 45px;
+    font-weight: normal;
+    line-height: 48px;
+    margin: 0;
+    padding-right: 50px;
+}
+
+
+.psv-container {
+    border: 1px solid gray;
 }
