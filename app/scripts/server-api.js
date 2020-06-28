@@ -25,9 +25,9 @@ function saveAnotationMarker(marker) {
         .then(response => {
             console.debug(response);
             if (response.success === true && response.message) {
-                // Handle success
+                displayMessage('alert-success', response.message);
             } else if (response.success === false && response.message) {
-                // Handle error
+                displayMessage('alert-danger', response.message);
             }
         });
 }
@@ -48,9 +48,9 @@ function removeAnotationMarker(marker) {
         .then(response => {
             console.debug(response);
             if (response.success === true && response.message) {
-                // Handle success
+                displayMessage('alert-success', response.message);
             } else if (response.success === false && response.message) {
-                // Handle error
+                displayMessage('alert-danger', response.message);
             }
         });
 }
@@ -74,9 +74,9 @@ function editAnotation(id, tooltip) {
         .then(response => {
             console.debug(response);
             if (response.success === true && response.message) {
-                // Handle success  
+                displayMessage('alert-success', response.message);
             } else if (response.success === false && response.message) {
-                console.error(response.message);
+                displayMessage('alert-danger', response.message);
             }
         });
 }
@@ -91,7 +91,7 @@ function getAllAnotations() {
             if (response.success === true && response.result) {
                 return JSON.stringify(response.result, null, 1);
             } else if (response.success === false && response.message) {
-                console.error(response.message);
+                displayMessage('alert-danger', response.message);
             }
         });
 }
@@ -113,9 +113,29 @@ function deleteAllData() {
         .then(response => response.json())
         .then(response => {
             if (response.success === true && response.result) {
-                console.debug('Deleted all data.');
+                displayMessage('alert-success', response.message);
             } else if (response.success === false && response.message) {
-                console.error(response.message);
+                displayMessage('salert-danger', response.message);
             }
         });
+}
+
+/**
+ * Hides the container used for message visualisations.
+ */
+function hideMessage() {
+    const messageContainer = document.getElementById('message-container');
+    messageContainer.style.visibility = 'hidden';
+}
+
+/**
+ * Display error message inside a container with id #message-container
+ * @param messageClass Can be either alert-success or alert-error (Green or Red)
+ * @param message The message to be displayed
+ */
+function displayMessage(messageClass, message) {
+    const messageContainer = document.getElementById('message-container');
+    messageContainer.className = messageClass;
+    messageContainer.style.visibility = 'visible';
+    messageContainer.innerText = message;
 }
