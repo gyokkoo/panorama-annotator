@@ -1,5 +1,8 @@
-/* the viewer container must have a defined size */
+body {
+    background-color: whitesmoke;
+}
 
+/* the viewer container must have a defined size */
 #photosphere {
     width: 85%;
     height: 70vh;
@@ -9,6 +12,7 @@
 #import-result {
     height: 250px;
     width: 400px;
+    display: block;
 }
 
 #pin-id {
@@ -31,7 +35,6 @@
     margin: 0;
     padding-right: 50px;
 }
-
 
 .psv-container {
     border: 1px solid gray;

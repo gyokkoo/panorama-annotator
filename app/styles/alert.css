@@ -1,9 +1,9 @@
 #message-container {
-    padding: 15px;
+    padding: 16px;
     margin-bottom: 20px;
     border: 1px solid transparent;
     border-radius: 4px;
-    cursor: pointer;
+    text-align: center;
 }
 
 .alert-success {
@@ -16,4 +16,18 @@
     color: #a94442;
     background-color: #f2dede;
     border-color: #ebccd1;
+}
+
+.close {
+    cursor: pointer;
+    position: absolute;
+    top: 34px;
+    right: 10px;
+    padding: 12px 16px;
+    font-size: x-large;
+    transform: translate(0%, -50%);
+}
+
+.close:hover {
+    background: #bbb;
 }
