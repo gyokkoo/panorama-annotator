@@ -8,14 +8,8 @@ parse_str($url_components['query'], $params);
       
 $panoramaImage = $params['panoramaImage'];
 
-$anotation = new Anotation(
-    '',
-    0,
-    0,
-    '',
-    $panoramaImage,
-    ''
-);
+$anotation = new Anotation();
+$anotation->setPanoramaImage($panoramaImage);
 
 $readStatement = $anotation->read();
 
@@ -31,7 +25,10 @@ while ($row = $readStatement->fetch(PDO::FETCH_ASSOC)) {
         "longitude" => $longitude,
         "tooltip" => $tooltip,
         "panoramaImage" => $panoramaImage,
-        "anotationImage" => $anotationImage
+        "anotationImage" => $anotationImage,
+        "html" => $html,
+        "style" => $style,
+        "content" => $content
     );
 
     array_push($anotations["result"], $item);

@@ -1,5 +1,7 @@
 <?php
 
+require_once "./src/Anotation.php";
+
 $phpInput = json_decode(file_get_contents("php://input"), true);
 
 $id = $phpInput["id"];
@@ -9,15 +11,8 @@ $tooltip = $phpInput["tooltip"];
 $panoramaImage = $phpInput["panoramaImage"];
 $anotationImage = $phpInput["anotationImage"];
 
-require_once "./src/Anotation.php";
-$anotation = new Anotation(
-    $id,
-    $latitude,
-    $longitude,
-    $tooltip,
-    $panoramaImage,
-    $anotationImage
-);
+$anotation = new Anotation();
+$anotation->setAttributes($id, $latitude, $longitude, $tooltip, $panoramaImage, $anotationImage);
 
 if ($anotation->edit()) {
     http_response_code(200);

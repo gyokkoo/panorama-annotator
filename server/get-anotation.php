@@ -9,15 +9,8 @@ parse_str($url_components['query'], $params);
 
 $id = $params['id'];
 
-$anotation = new Anotation(
-    $id,
-    0,
-    0,
-    '',
-    '',
-    ''
-);
-
+$anotation = new Anotation();
+$anotation->setId($id);
 $getResult = $anotation->readAnotation();
 
 if ($getResult == null) {
@@ -31,7 +24,10 @@ if ($getResult == null) {
         "longitude" => $getResult['longitude'],
         "tooltip" => $getResult['tooltip'],
         "panoramaImage" => $getResult['panoramaImage'],
-        "anotationImage" => $getResult['anotationImage']
+        "anotationImage" => $getResult['anotationImage'],
+        "html" => $getResult['html'],
+        "style" => $getResult['style'],
+        "content" => $getResult['content']
     );
     echo json_encode(["success" => true, "message" => "Found anotation!", "result" => $result]);
 }

@@ -1,8 +1,7 @@
 <?php
 
-require_once "./src/Database.php"; 
-$database = new Database();
-$connection = $database->getConnection();
+require_once "connect-database.php"; 
+$connection = connectDatabase();
 
 $truncateStatement = 'TRUNCATE TABLE `anotations-table`;';
 

@@ -1,18 +1,14 @@
 <?php
 
+require_once "./src/Anotation.php";
+
 $phpInput = json_decode(file_get_contents("php://input"), true);
 
 $id = $phpInput["id"];
 
-require_once "./src/Anotation.php";
-$anotation = new Anotation(
-    $id,
-    0,
-    0,
-    '',
-    '',
-    ''
-);
+$anotation = new Anotation();
+
+$anotation->setId($id);
 
 try {
     $anotation->deleteFromDb();
