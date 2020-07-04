@@ -20,7 +20,7 @@ if (isset($phpInput["anotationImage"])) {
 if (isset($phpInput["html"]) && isset($phpInput["style"])) {
     $html = $phpInput["html"];
     $style = $phpInput["style"];
-    $anotation->setHtmlAnotationAttributes($html, $style, $content);
+    $anotation->setHtmlAnotationAttributes($html, $style);
 }
 
 if(isset($phpInput["content"])){

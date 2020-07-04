@@ -152,18 +152,21 @@ class Anotation
         $editStatement = "UPDATE
                        `anotations-table`
                     SET
-                        tooltip = :tooltip
+                        tooltip = :tooltip,
+                        html = :html,
+                        style = :style
                     WHERE
                         id = :id";
         $editResult = $this->connection->prepare($editStatement);
 
         // Sanitize
         $this->tooltip = htmlspecialchars(strip_tags($this->tooltip));
-
         $this->id = htmlspecialchars(strip_tags($this->id));
 
         // Bind new values
         $editResult->bindParam(':tooltip', $this->tooltip);
+        $editResult->bindParam(':html', $this->html);
+        $editResult->bindParam(':style', $this->style);
         $editResult->bindParam(':id', $this->id);
 
         if ($editResult->execute()) {

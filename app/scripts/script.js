@@ -61,13 +61,25 @@ function getShareableView(id) {
     return `
         <form onsubmit="changeTooltip(event)">
             <div id="pin-id">${id}</div>
-            <label for="fname">Change tooltip text</label>
+            <label for="pin-tooltip">Change tooltip text</label>
             <input type="text" id="pin-tooltip" name="pin-tooltip">
             <input type="submit">
-        </div>
+            </div>
+        </form>
         <h2>Share PIN copying this URL:</h2>
         <a href="${url}" target="_blank" id="get-shareable-url">${url}</a>   
         <canvas id="qrCode"></canvas>
+
+        <h2>Convert to HTML annotation:</h2>
+        <form onsubmit="changeHtmlAnnotation(event)">
+            <label for="pin-html">Change HTML:</label>
+            <textarea rows="6" cols="30" id="pin-html" name="pin-html">
+            </textarea> <br/>
+            <label for="pin-css">Change CSS:</label><br />
+            <textarea rows="5" cols="30" id="pin-css" name="pin-css">
+            </textarea> <br/>
+            <input type="submit">
+        </form>
     `
 }
 
@@ -94,7 +106,7 @@ viewer.on('click', (e, data) => {
             anchor: 'bottom center',
             tooltip: 'Generated pin, right click to make it shareable',
             data: {
-                generated: true
+                removeable: true
             }
         };
 
@@ -105,7 +117,7 @@ viewer.on('click', (e, data) => {
 });
 
 markersPlugin.on('select-marker', function (e, marker, data) {
-    if (marker.data && marker.data.generated) {
+    if (marker.data && marker.data.removeable) {
         if (data.dblclick) {
             markersPlugin.removeMarker(marker);
             removeAnotationMarker(marker);
@@ -156,6 +168,49 @@ function changeTooltip(event) {
             generateQr(url.innerHTML);
         }
     }, 0);
+}
+
+function changeHtmlAnnotation(event) {
+    event.preventDefault();
+    const pinId = document.getElementById("pin-id").innerHTML;
+    const htmlData = document.getElementById("pin-html").value.trim();
+    const cssData = document.getElementById("pin-css").value.trim();
+
+    const cssObject = {};
+    if (cssData) {
+        const cssStyles = cssData.split(",");
+        if (cssStyles.length === 0) {
+            console.error("Css should be comma separated!");
+        }
+        cssStyles.forEach(style => {
+            const cssKey = style.split(':')[0].trim();
+            const cssValue = style.split(':')[1].trim();
+            cssObject[cssKey] = cssValue;
+        });
+    }
+    console.log(cssObject);
+    
+
+    if (!pinId) {
+        console.error("Could not find pinId!");
+    }
+   
+    const currentMarker = markersPlugin.getCurrentMarker();
+    const latitude = currentMarker.config.latitude;
+    const longitude = currentMarker.config.longitude;
+    const newTooltip = "HTML annotation"
+    markersPlugin.removeMarker(pinId);
+    markersPlugin.addMarker({
+        id: pinId,
+        latitude: latitude,
+        longitude: longitude,
+        tooltip: newTooltip,
+        anchor: 'bottom center',
+        html: htmlData,
+        style: cssObject,
+    });
+
+    editAnotation(pinId, newTooltip, htmlData, JSON.stringify(cssObject));
 }
 
 function showDropdown(event) {

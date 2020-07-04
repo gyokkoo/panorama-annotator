@@ -20,7 +20,7 @@ function addMarkers(data) {
         return;
     }
     data.forEach((marker) => {
-        markersPlugin.addMarker({
+        const markerToAdd = {
             id: marker.id,
             latitude: marker.latitude,
             longitude: marker.longitude,
@@ -28,11 +28,24 @@ function addMarkers(data) {
             width: 32,
             height: 32,
             anchor: 'bottom center',
-            image: 'https://photo-sphere-viewer.js.org/assets/pin-red.png',
-            data: {
-                generated: true
+            content: marker.content,
+        }
+
+        // Note: Sphere does not support both html and image properties.
+        if (marker['html']) {
+            markerToAdd['html'] = marker['html'];
+            markerToAdd['style'] = marker['style'] ? JSON.parse(marker['style']) : '';
+            markerToAdd['data'] = {
+                removeable: false,
             }
-        })
+        } else if (marker['anotationImage']) {
+            markerToAdd['image'] = marker['anotationImage']
+            markerToAdd['data'] = {
+                removeable: true,
+            }
+        }
+
+        markersPlugin.addMarker(markerToAdd)
     });
 }
 

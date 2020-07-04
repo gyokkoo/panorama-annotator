@@ -55,14 +55,20 @@ function removeAnotationMarker(marker) {
         });
 }
 
-function editAnotation(id, tooltip) {
+function editAnotation(id, tooltip, html, css) {
     const serverData = {
         id: id,
         longitude: '',
         latitude: '',
         panoramaImage: '',
         anotationImage: '',
-        tooltip: tooltip
+        tooltip: tooltip,
+    };
+    if (html) {
+        serverData['html'] = html;
+    }
+    if (css) {
+        serverData['style'] = css;
     }
     console.debug(serverData);
 
@@ -81,19 +87,18 @@ function editAnotation(id, tooltip) {
         });
 }
 
-function getAllAnotations() {
+async function getAllAnotations() {
     const panoramaImage = window.localStorage.getItem("panorama-image");
-    return fetch(serverEndpoint + `get-all-anotations.php?panoramaImage=${panoramaImage}`, {
+    const response = await fetch(serverEndpoint + `get-all-anotations.php?panoramaImage=${panoramaImage}`, {
         method: 'GET',
-    })
-        .then(response => response.json())
-        .then(response => {
-            if (response.success === true && response.result) {
-                return JSON.stringify(response.result, null, 1);
-            } else if (response.success === false && response.message) {
-                displayMessage('alert-danger', response.message);
-            }
-        });
+    });
+    const responseData = await response.json();
+    if (responseData.success === true && responseData.result) {
+        return JSON.stringify(responseData.result, null, 1);
+    }
+    else if (responseData.success === false && responseData.message) {
+        displayMessage('alert-danger', responseData.message);
+    }
 }
 
 function generateFilename() {
