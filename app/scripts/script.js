@@ -117,17 +117,28 @@ viewer.on('click', (e, data) => {
 });
 
 markersPlugin.on('select-marker', function (e, marker, data) {
-    if (marker.data && marker.data.removeable) {
-        if (data.dblclick) {
+    if (marker.data) {
+        if (data.dblclick && marker.data.removeable) {
             markersPlugin.removeMarker(marker);
             removeAnotationMarker(marker);
         } else if (data.rightclick) {
-            markersPlugin.updateMarker({
-                id: marker.id,
-                image: 'https://photo-sphere-viewer.js.org/assets/pin-blue.png',
-                tooltip: 'Shareable anotation. <b>Click me!</b>',
-                content: getShareableView(marker.id, marker.config.longitude, marker.config.latitude, "https://fmi-panorama-images.s3.amazonaws.com/02_panorama_small.jpg"),
-            });
+            if (marker.data.htmlAnnotation) {
+                markersPlugin.updateMarker({
+                    id: marker.id,
+                    content: getShareableView(marker.id, marker.config.longitude, marker.config.latitude, window.localStorage.getItem("panorama-image")),
+                });
+            } else {
+                markersPlugin.updateMarker({
+                    id: marker.id,
+                    image: 'https://photo-sphere-viewer.js.org/assets/pin-blue.png',
+                    tooltip: 'Shareable anotation. <b>Click me!</b>',
+                    content: getShareableView(marker.id, marker.config.longitude, marker.config.latitude, window.localStorage.getItem("panorama-image")),
+                    data: {
+                        removeable: false,
+                    }
+                });
+            }
+
         }
     }
     setTimeout(() => {
@@ -189,12 +200,11 @@ function changeHtmlAnnotation(event) {
         });
     }
     console.log(cssObject);
-    
 
     if (!pinId) {
         console.error("Could not find pinId!");
     }
-   
+
     const currentMarker = markersPlugin.getCurrentMarker();
     const latitude = currentMarker.config.latitude;
     const longitude = currentMarker.config.longitude;
@@ -208,6 +218,10 @@ function changeHtmlAnnotation(event) {
         anchor: 'bottom center',
         html: htmlData,
         style: cssObject,
+        data: {
+            htmlAnnotation: true,
+            removeable: false,
+        }
     });
 
     editAnotation(pinId, newTooltip, htmlData, JSON.stringify(cssObject));

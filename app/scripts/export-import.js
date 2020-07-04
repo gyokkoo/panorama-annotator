@@ -37,11 +37,13 @@ function addMarkers(data) {
             markerToAdd['style'] = marker['style'] ? JSON.parse(marker['style']) : '';
             markerToAdd['data'] = {
                 removeable: false,
+                htmlAnnotation: true,
             }
         } else if (marker['anotationImage']) {
             markerToAdd['image'] = marker['anotationImage']
             markerToAdd['data'] = {
                 removeable: true,
+                htmlAnnotation: false,
             }
         }
 
