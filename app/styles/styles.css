@@ -1,5 +1,8 @@
-/* the viewer container must have a defined size */
+body {
+    background-color: floralwhite;
+}
 
+/* the viewer container must have a defined size */
 #photosphere {
     width: 85%;
     height: 70vh;
@@ -31,7 +34,6 @@
     margin: 0;
     padding-right: 50px;
 }
-
 
 .psv-container {
     border: 1px solid gray;

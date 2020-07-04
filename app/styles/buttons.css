@@ -10,10 +10,10 @@
     font-family: Arial;
     font-size: 15px;
     font-weight: bold;
-    padding: 12px 24px;
+    padding: 12px 24px; /* Top/Down and Right/Left */
+    margin: 4px 4px 5px 0; /* Top/Down/Right/Left */
     text-decoration: none;
     text-shadow: 0px 1px 0px #528ecc;
-    margin-right: 5px;
 }
 
 .button:hover {

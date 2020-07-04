@@ -181,3 +181,32 @@ function hideImportArea() {
 function showImportArea() {
     document.getElementById('import-area').style.display = 'block';
 }
+
+// Initially hide close 
+document.getElementById('message-close-btn').style.visibility = 'hidden';
+
+/**
+ * Hides the container used for message visualisations.
+ */
+function hideMessage() {
+    const messageContainer = document.getElementById('message-container');
+    messageContainer.style.visibility = 'hidden';
+
+    // Hide close button
+    document.getElementById('message-close-btn').style.visibility = 'hidden';
+}
+
+/**
+ * Display error message inside a container with id #message-container
+ * @param messageClass Can be either alert-success or alert-error (Green or Red)
+ * @param message The message to be displayed
+ */
+function displayMessage(messageClass, message) {
+    const messageContainer = document.getElementById('message-container');
+    messageContainer.className = messageClass;
+    messageContainer.style.visibility = 'visible';
+    messageContainer.innerText = message;
+
+    // Show close button
+    document.getElementById('message-close-btn').style.visibility = 'visible';
+}
