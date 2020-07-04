@@ -52,13 +52,12 @@ function getHtml(template) {
 //      */
 //    });
 
-// List the photo albums that exist in the bucket.
-function listAlbums() {
+function listPanoramas() {
   s3.listObjects({Delimiter: '/'}, function(err, data) {
     console.log(data);
     if (err) {
         console.log(err);
-      return alert('There was an error listing your albums: ' + err.message);
+      return alert('An error occured while listing panorama images: ' + err.message);
     } else {
       const images = data.Contents.map(function(content) {
         const panorama = content.Key;

@@ -29,11 +29,14 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `anotations-table` (
   `id` varchar(120) NOT NULL,
-  `latitude` double DEFAULT NULL,
+  `latitude` double NOT NULL,
   `longitude` double NOT NULL,
   `tooltip` text NOT NULL,
   `panoramaImage` text NOT NULL,
-  `anotationImage` text NULL
+  `anotationImage` text NULL,
+  `html` text NULL,
+  `style` text NULL,
+  `content` text NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --

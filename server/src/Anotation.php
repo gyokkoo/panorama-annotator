@@ -1,5 +1,7 @@
 <?php
 
+require "./src/Database.php";
+
 class Anotation
 {
     private $id;
@@ -8,33 +10,57 @@ class Anotation
     private $tooltip;
     private $panoramaImage;
     private $anotationImage;
+    private $html; // Optional
+    private $style; // Optional
+    private $content; // Optional
 
-    public function __construct($id, $latitude, $longitude, $tooltip, $panoramaImage, $anotationImage)
+    public function setId($id)
     {
         $this->id = $id;
+    }
+
+    public function setPanoramaImage($panoramaImage)
+    {
+        $this->panoramaImage = $panoramaImage;
+    }
+
+    public function setAttributes($id, $latitude, $longitude, $tooltip, $panoramaImage)
+    {
+        $this->setId($id);
+        $this->setPanoramaImage($panoramaImage);
         $this->latitude = $latitude;
         $this->longitude = $longitude;
         $this->tooltip = $tooltip;
-        $this->panoramaImage = $panoramaImage;
+    }
+
+    public function validateAttributes(): void
+    {
+        if (!isset($this->id) || !isset($this->latitude) || !isset($this->longitude) || !isset($this->tooltip) || !isset($this->panoramaImage)) {
+            throw new Exception('Attributes validation failed. Please check if id,latitude,longitude,tooltip and panoramaImage values are present.');
+        }
+    }
+
+    public function setAnotationImage($anotationImage)
+    {
         $this->anotationImage = $anotationImage;
     }
 
-    public function validate(): void
+    public function setHtmlAnotationAttributes($html, $style, $content)
     {
-        // Central place for validation - Modify based on client`s requirements.
-        // TODO: Add validations
+        $this->html = $html;
+        $this->style = $style;
+        $this->content = $content;
     }
 
     public function storeInDatabase(): void
     {
-        require_once "./src/Database.php";
-
         $database = new Database();
-        $connection = $database->getConnection();
 
+        $connection = $database->getConnection();
+        $this->validateAttributes();
         $insertStatement = $connection->prepare(
-            "INSERT INTO `anotations-table` (id, latitude, longitude, tooltip, panoramaImage, anotationImage)
-                       VALUES (:id, :latitude, :longitude, :tooltip, :panoramaImage, :anotationImage)"
+            "INSERT INTO `anotations-table` (id, latitude, longitude, tooltip, panoramaImage, anotationImage, html, style, content)
+                       VALUES (:id, :latitude, :longitude, :tooltip, :panoramaImage, :anotationImage, :html, :style, :content)"
         );
 
         $insertResult = $insertStatement->execute([
@@ -44,6 +70,9 @@ class Anotation
             "tooltip" => $this->tooltip,
             "panoramaImage" => $this->panoramaImage,
             "anotationImage" => $this->anotationImage,
+            "html" => $this->html,
+            "style" => $this->style,
+            "content" => $this->content
         ]);
 
         if (!$insertResult) {
@@ -54,16 +83,12 @@ class Anotation
             } else {
                 $errorMessage = "Server error, try again later or contact development team";
             }
-
-            var_dump($errorInfo);
             throw new Exception($errorMessage);
         }
     }
 
     public function readAnotation()
     {
-        require_once "./src/Database.php";
-
         $database = new Database();
         $connection = $database->getConnection();
 
@@ -74,7 +99,7 @@ class Anotation
         $this->id = htmlspecialchars(strip_tags($this->id));
         $getResult->bindParam(':id', $this->id);
         $getResult->execute();
-        
+
         $row = $getResult->fetch(PDO::FETCH_ASSOC);
         $this->id = $row['id'];
         $this->latitude = $row['latitude'];
@@ -82,14 +107,15 @@ class Anotation
         $this->tooltip = $row['tooltip'];
         $this->panoramaImage = $row['panoramaImage'];
         $this->anotationImage = $row['anotationImage'];
+        $this->html = $row['html'];
+        $this->style = $row['style'];
+        $this->content = $row['content'];
 
         return $row;
     }
 
     public function read()
     {
-        require_once "./src/Database.php";
-
         $database = new Database();
         $connection = $database->getConnection();
 
@@ -107,11 +133,8 @@ class Anotation
 
     public function deleteFromDb(): void
     {
-        require_once "./src/Database.php";
-
         $database = new Database();
         $connection = $database->getConnection();
-        
 
         $deleteStatement = "DELETE FROM `anotations-table`  WHERE id = :id";
         $deleteResult = $connection->prepare($deleteStatement);
@@ -119,7 +142,7 @@ class Anotation
         // Sanitize
         $this->id = htmlspecialchars(strip_tags($this->id));
         $deleteResult->bindParam(':id', $this->id);
-        
+
         $deleteResult->execute();
     }
 
