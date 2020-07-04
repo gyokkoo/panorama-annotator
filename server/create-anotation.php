@@ -17,11 +17,15 @@ if (isset($phpInput["anotationImage"])) {
     $anotationImage = $phpInput["anotationImage"];
     $anotation->setAnotationImage($anotationImage);
 }
-if (isset($phpInput["html"]) && isset($phpInput["style"]) && isset($phpInput["content"])) {
+if (isset($phpInput["html"]) && isset($phpInput["style"])) {
     $html = $phpInput["html"];
     $style = $phpInput["style"];
-    $content = $phpInput["content"];
     $anotation->setHtmlAnotationAttributes($html, $style, $content);
+}
+
+if(isset($phpInput["content"])){
+    $content = $phpInput["content"];
+    $anotation->setContent($content);
 }
 
 try {

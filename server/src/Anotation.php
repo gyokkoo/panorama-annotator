@@ -10,7 +10,7 @@ class Anotation
     private $longitude;
     private $tooltip;
     private $panoramaImage;
-    private $anotationImage;
+    private $anotationImage; // Optional
     private $html; // Optional
     private $style; // Optional
     private $content; // Optional
@@ -34,6 +34,10 @@ class Anotation
         $this->panoramaImage = $panoramaImage;
     }
 
+    public function setContent($content){
+        $this->content = $content;
+    }
+
     public function setAttributes($id, $latitude, $longitude, $tooltip, $panoramaImage)
     {
         $this->setId($id);
@@ -55,11 +59,10 @@ class Anotation
         $this->anotationImage = $anotationImage;
     }
 
-    public function setHtmlAnotationAttributes($html, $style, $content)
+    public function setHtmlAnotationAttributes($html, $style)
     {
         $this->html = $html;
         $this->style = $style;
-        $this->content = $content;
     }
 
     public function storeInDatabase(): void
