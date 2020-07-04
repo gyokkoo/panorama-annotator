@@ -1,5 +1,5 @@
 body {
-    background-color: floralwhite;
+    background-color: whitesmoke;
 }
 
 /* the viewer container must have a defined size */
@@ -12,6 +12,7 @@ body {
 #import-result {
     height: 250px;
     width: 400px;
+    display: block;
 }
 
 #pin-id {

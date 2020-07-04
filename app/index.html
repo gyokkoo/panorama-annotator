@@ -35,7 +35,6 @@
 	<!-- Container for displaying back-end messages -->
 	<div id="message-container" class="alert">&nbsp;</div>
 	<span id="message-close-btn" class="close" onclick="hideMessage()">&times;</span>
-
 	<div class="header-wrapper">
 		<h1 class="page-title">Panorama anotator</h1>
 		<div class="dropdown">
@@ -55,10 +54,10 @@
 	<button id="import-btn" class="button" onclick="showImportArea()">Import anotations</button>
 	<button id="export" class="button" onclick="exportAnotations()">Export anotations</button>
 	<div id="import-area">
-		<input type="file" id="import-files" value="Import" /><br />
+		<input type="file" value="Import" /><br />
 		<textarea id="import-result"></textarea>
-		<button onclick="importAnotations()">Import</button>
-		<button onclick="hideImportArea()">Close</button>
+		<button class="button-gray" onclick="importAnotations()">Import</button>
+		<button class="button-gray" onclick="hideImportArea()">Close</button>
 	</div>
 
 	<script src="scripts/script.js"></script>

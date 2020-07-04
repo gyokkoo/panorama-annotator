@@ -182,7 +182,7 @@ function showImportArea() {
     document.getElementById('import-area').style.display = 'block';
 }
 
-// Initially hide close 
+// Initially hide close button
 document.getElementById('message-close-btn').style.visibility = 'hidden';
 
 /**
