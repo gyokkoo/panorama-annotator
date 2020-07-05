@@ -1,4 +1,4 @@
-const serverEndpoint = "../../../server/"
+const serverEndpoint = "../../server/"
 const urlParams = new URLSearchParams(window.location.href);
 
 const id = urlParams.get('id');

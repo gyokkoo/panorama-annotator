@@ -62,14 +62,15 @@ function editAnotation(id, tooltip, html, css) {
         latitude: '',
         panoramaImage: '',
         anotationImage: '',
-        tooltip: tooltip,
     };
-    if (html) {
+    if (tooltip) {
+        serverData['tooltip'] = tooltip;
+    } else if (html) {
         serverData['html'] = html;
-    }
-    if (css) {
+    } else if (css) {
         serverData['style'] = css;
     }
+
     console.debug(serverData);
 
     fetch(serverEndpoint + "edit-anotation.php", {

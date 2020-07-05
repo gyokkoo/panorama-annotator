@@ -15,7 +15,8 @@ class Anotation
     private $style; // Optional
     private $content; // Optional
 
-    public function setDbConnection(){
+    public function setDbConnection()
+    {
         $this->connection = connectDatabase();
     }
 
@@ -23,7 +24,7 @@ class Anotation
     {
         $this->setDbConnection();
     }
-    
+
     public function setId($id)
     {
         $this->id = $id;
@@ -34,9 +35,12 @@ class Anotation
         $this->panoramaImage = $panoramaImage;
     }
 
-    public function setContent($content){
+    public function setContent($content)
+    {
         $this->content = $content;
     }
+
+
 
     public function setAttributes($id, $latitude, $longitude, $tooltip, $panoramaImage)
     {
@@ -59,9 +63,18 @@ class Anotation
         $this->anotationImage = $anotationImage;
     }
 
-    public function setHtmlAnotationAttributes($html, $style)
+    public function setTooltip($tooltip)
+    {
+        $this->tooltip = $tooltip;
+    }
+
+    public function setAnotationHtml($html)
     {
         $this->html = $html;
+    }
+
+    public function setAnotationStyle($style)
+    {
         $this->style = $style;
     }
 
@@ -147,27 +160,47 @@ class Anotation
         $deleteResult->execute();
     }
 
-    public function edit(): bool
+    public function editAnnotationProperty(): bool
     {
-        $editStatement = "UPDATE
-                       `anotations-table`
-                    SET
-                        tooltip = :tooltip,
-                        html = :html,
-                        style = :style
-                    WHERE
-                        id = :id";
-        $editResult = $this->connection->prepare($editStatement);
+        if (!isset($this->id)) {
+            throw new Exception("Edit operation failed! Annotation ID is not provided!");
+        }
 
         // Sanitize
-        $this->tooltip = htmlspecialchars(strip_tags($this->tooltip));
         $this->id = htmlspecialchars(strip_tags($this->id));
+        if (isset($this->tooltip)) {
+            $editStatement = "UPDATE
+                `anotations-table`
+            SET
+                tooltip = :tooltip
+            WHERE
+                id = :id";
+            $editResult = $this->connection->prepare($editStatement);
+            $editResult->bindParam(':id', $this->id);
+            $editResult->bindParam(':tooltip', $this->tooltip);
+        } else if (isset($this->html)) {
+            $editStatement = "UPDATE
+                `anotations-table`
+            SET
+                html = :html
+            WHERE
+                id = :id";
 
-        // Bind new values
-        $editResult->bindParam(':tooltip', $this->tooltip);
-        $editResult->bindParam(':html', $this->html);
-        $editResult->bindParam(':style', $this->style);
-        $editResult->bindParam(':id', $this->id);
+            $editResult = $this->connection->prepare($editStatement);
+            $editResult->bindParam(':id', $this->id);
+            $editResult->bindParam(':html', $this->html);
+        } else if (isset($this->style)) {
+            $editStatement = "UPDATE
+                `anotations-table`
+            SET
+                style = :style
+            WHERE
+                id = :id";
+
+            $editResult = $this->connection->prepare($editStatement);
+            $editResult->bindParam(':id', $this->id);
+            $editResult->bindParam(':style', $this->style);
+        }
 
         if ($editResult->execute()) {
             return true;

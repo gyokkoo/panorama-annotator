@@ -56,29 +56,32 @@ function generateQr(url) {
 }
 
 function getShareableView(id) {
-    const url = `${window.location.href}/share-view/share.html?&id=${id}`
+    const shareUrl = `${window.location.href}share-view/share.html?&id=${id}`
 
     return `
         <form onsubmit="changeTooltip(event)">
             <div id="pin-id">${id}</div>
-            <label for="pin-tooltip">Change tooltip text</label>
+            <label for="pin-tooltip">Change tooltip text</label> <br />
             <input type="text" id="pin-tooltip" name="pin-tooltip">
-            <input type="submit">
+            <input class="button-gray" type="submit">
             </div>
         </form>
         <h2>Share PIN copying this URL:</h2>
-        <a href="${url}" target="_blank" id="get-shareable-url">${url}</a>   
+        <a href="${shareUrl}" target="_blank" id="get-shareable-url">${shareUrl}</a>   
         <canvas id="qrCode"></canvas>
 
         <h2>Convert to HTML annotation:</h2>
         <form onsubmit="changeHtmlAnnotation(event)">
-            <label for="pin-html">Change HTML:</label>
+            <label for="pin-html">Change HTML:</label> <br/>
             <textarea rows="6" cols="30" id="pin-html" name="pin-html">
             </textarea> <br/>
+            <input class="button-gray" type="submit">
+        </form>
+        <form onsubmit="changeStyleAnnotation(event)">
             <label for="pin-css">Change CSS:</label><br />
             <textarea rows="5" cols="30" id="pin-css" name="pin-css">
             </textarea> <br/>
-            <input type="submit">
+            <input class="button-gray" type="submit">
         </form>
     `
 }
@@ -157,7 +160,6 @@ viewer.animate({
     speed: '-2rpm',
 }).then(() => {
     console.debug('Animation completed.');
-
     // API specs: https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API 
 });
 
@@ -185,8 +187,36 @@ function changeHtmlAnnotation(event) {
     event.preventDefault();
     const pinId = document.getElementById("pin-id").innerHTML;
     const htmlData = document.getElementById("pin-html").value.trim();
-    const cssData = document.getElementById("pin-css").value.trim();
 
+    if (!pinId) {
+        console.error("Could not find pinId!");
+    }
+
+    const currentMarker = markersPlugin.getCurrentMarker();
+    const latitude = currentMarker.config.latitude;
+    const longitude = currentMarker.config.longitude;
+    const tooltip = currentMarker.config.tooltip;
+    markersPlugin.removeMarker(pinId);
+    markersPlugin.addMarker({
+        id: pinId,
+        latitude: latitude,
+        longitude: longitude,
+        tooltip: tooltip,
+        anchor: 'bottom center',
+        html: htmlData,
+        data: {
+            htmlAnnotation: true,
+            removeable: false,
+        }
+    });
+
+    editAnotation(pinId, undefined, htmlData, undefined);
+}
+
+function changeStyleAnnotation(event) {
+    event.preventDefault();
+    const pinId = document.getElementById("pin-id").innerHTML;
+    const cssData = document.getElementById("pin-css").value.trim();
     const cssObject = {};
     if (cssData) {
         const cssStyles = cssData.split(",");
@@ -199,8 +229,6 @@ function changeHtmlAnnotation(event) {
             cssObject[cssKey] = cssValue;
         });
     }
-    console.log(cssObject);
-
     if (!pinId) {
         console.error("Could not find pinId!");
     }
@@ -208,15 +236,16 @@ function changeHtmlAnnotation(event) {
     const currentMarker = markersPlugin.getCurrentMarker();
     const latitude = currentMarker.config.latitude;
     const longitude = currentMarker.config.longitude;
-    const newTooltip = "HTML annotation"
+    const tooltip = currentMarker.config.tooltip;
+    const html = currentMarker.config.html;
     markersPlugin.removeMarker(pinId);
     markersPlugin.addMarker({
         id: pinId,
         latitude: latitude,
         longitude: longitude,
-        tooltip: newTooltip,
+        tooltip: tooltip,
         anchor: 'bottom center',
-        html: htmlData,
+        html: html,
         style: cssObject,
         data: {
             htmlAnnotation: true,
@@ -224,7 +253,7 @@ function changeHtmlAnnotation(event) {
         }
     });
 
-    editAnotation(pinId, newTooltip, htmlData, JSON.stringify(cssObject));
+    editAnotation(pinId, undefined, undefined, JSON.stringify(cssObject));
 }
 
 function showDropdown(event) {
