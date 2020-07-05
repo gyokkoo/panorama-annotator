@@ -1,4 +1,4 @@
-const serverEndpoint = "../../../server/"
+const serverEndpoint = "../../server/"
 const urlParams = new URLSearchParams(window.location.href);
 
 const id = urlParams.get('id');
@@ -24,6 +24,23 @@ fetch((getAnotationByIdEndpoint), {
     });
 
 function initializePanoramaImage(data) {
+    const markerToAdd = {
+        id: data.id,
+        longitude: data.longitude,
+        latitude: data.latitude,
+        width: 32,
+        height: 32,
+        anchor: 'bottom center',
+        tooltip: data.tooltip,
+    };
+
+    if (data.html) {
+        markerToAdd['html'] = data.html;
+        markerToAdd['style'] = data.style ? JSON.parse(data.style) : '';
+    } else if (data.anotationImage) {
+        markerToAdd['anotationImage'] = data.anotationImage;
+    }
+
     const viewer = new PhotoSphereViewer.Viewer({
         panorama: data.panoramaImage,
         container: 'photosphere',
@@ -35,20 +52,7 @@ function initializePanoramaImage(data) {
         touchmoveTwoFingers: true,
         plugins: [
             [PhotoSphereViewer.MarkersPlugin, {
-                markers: [
-                    {
-                        // image marker that opens the panel when clicked
-                        id: data.id,
-                        longitude: data.longitude,
-                        latitude: data.latitude,
-                        image: data.anotationImage,
-                        width: 32,
-                        height: 32,
-                        anchor: 'bottom center',
-                        tooltip: data.tooltip,
-                    },
-                    // NOTE: Other markers are shown on panorama in getAllAnotations() method
-                ],
+                markers: [markerToAdd],
             }],
         ],
     });

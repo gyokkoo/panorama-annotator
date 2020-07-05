@@ -19,6 +19,10 @@ body {
     display: none;
 }
 
+#qrCode {
+    margin-top: 15px;
+}
+
 .header-wrapper {
     text-align: center;
     padding-top: 0px;
