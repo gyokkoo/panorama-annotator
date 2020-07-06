@@ -1,5 +1,6 @@
 <?php
 
+// Warning: Do not use truncate in production! This file is intended to be used only for DEV purposes!
 require_once "connect-database.php"; 
 $connection = connectDatabase();
 

@@ -44,7 +44,7 @@ function initializePanoramaImage(data) {
     const viewer = new PhotoSphereViewer.Viewer({
         panorama: data.panoramaImage,
         container: 'photosphere',
-        caption: 'Sample mountain panorama',
+        caption: '',
         loadingImg: 'https://photo-sphere-viewer.js.org/assets/photosphere-logo.gif',
         navbar: 'autorotate zoom download caption fullscreen',
         defaultLat: 0.3,

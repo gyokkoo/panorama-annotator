@@ -112,6 +112,25 @@ function generateFilename() {
     return result;
 }
 
+function deleteAllAnnotations(panoramaImage) {
+    fetch(serverEndpoint + "delete-all-annotations.php", {
+        method: 'PUT',
+        body: JSON.stringify({
+            panoramaImage: panoramaImage
+        })
+    })
+        .then(response => response.json())
+        .then(response => {
+            if (response.success === true && response.message) {
+                displayMessage('alert-success', response.message);
+                location.reload();
+            } else if (response.success === false && response.message) {
+                displayMessage('alert-danger', response.message);
+            }
+        });
+}
+
+// Note: Do not use in production. This is intended to be used only for DEV purpose.
 function deleteAllData() {
     fetch(serverEndpoint + "delete-all-data.php", {
         method: 'PUT',
@@ -121,7 +140,7 @@ function deleteAllData() {
             if (response.success === true && response.result) {
                 displayMessage('alert-success', response.message);
             } else if (response.success === false && response.message) {
-                displayMessage('salert-danger', response.message);
+                displayMessage('alert-danger', response.message);
             }
         });
 }

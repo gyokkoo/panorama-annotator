@@ -56,7 +56,10 @@ function generateQr(url) {
 }
 
 function getShareableView(id) {
-    const shareUrl = `${window.location.href}share-view/share.html?&id=${id}`
+    const currentUrl = window.location.href;
+    // Transform domain/app/index.html to domain/app/
+    const truncatedUrl = currentUrl.substr(0, currentUrl.lastIndexOf("/") + 1);
+    const shareUrl = `${truncatedUrl}share-view/share.html?&id=${id}`;
 
     return `
         <form onsubmit="changeTooltip(event)">
@@ -83,6 +86,8 @@ function getShareableView(id) {
             </textarea> <br/>
             <input class="button-gray" type="submit">
         </form>
+        <hr />
+        <button onclick="deleteAnnotation()" class="delete-btn">Delete Annotation</button>
     `
 }
 
@@ -196,6 +201,7 @@ function changeHtmlAnnotation(event) {
     const latitude = currentMarker.config.latitude;
     const longitude = currentMarker.config.longitude;
     const tooltip = currentMarker.config.tooltip;
+    const style = currentMarker.config.style;
     markersPlugin.removeMarker(pinId);
     markersPlugin.addMarker({
         id: pinId,
@@ -204,6 +210,7 @@ function changeHtmlAnnotation(event) {
         tooltip: tooltip,
         anchor: 'bottom center',
         html: htmlData,
+        style: style,
         data: {
             htmlAnnotation: true,
             removeable: false,
@@ -254,6 +261,14 @@ function changeStyleAnnotation(event) {
     });
 
     editAnotation(pinId, undefined, undefined, JSON.stringify(cssObject));
+}
+
+function deleteAnnotation() {
+    const pinId = document.getElementById("pin-id").innerHTML;
+    removeAnotationMarker({
+        id: pinId
+    });
+    markersPlugin.removeMarker(pinId);
 }
 
 function showDropdown(event) {

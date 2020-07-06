@@ -160,6 +160,23 @@ class Anotation
         $deleteResult->execute();
     }
 
+    public function deleteAllPanoramaAnnotations(): bool
+    {
+        if (!isset($this->panoramaImage)) {
+            throw new Exception("Cannot delete! Panorama image should be specified.");
+        }
+
+        $deleteStatement = "DELETE FROM `anotations-table`  WHERE panoramaImage = :panoramaImage";
+        $deleteResult = $this->connection->prepare($deleteStatement);
+
+        $deleteResult->bindParam(':panoramaImage', $this->panoramaImage);
+
+        if ($deleteResult->execute()) {
+            return true;
+        }
+        return false;
+    }
+
     public function editAnnotationProperty(): bool
     {
         if (!isset($this->id)) {
