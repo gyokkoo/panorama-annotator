@@ -1,11 +1,12 @@
 hideDropdown();
 hideImportArea();
+const defaultImage = "https://fmi-panorama-images.s3.amazonaws.com/01_mountain.jpg";
 
 const cachedImage = window.localStorage.getItem("panorama-image");
 const viewer = new PhotoSphereViewer.Viewer({
-    panorama: cachedImage ? cachedImage : "https://fmi-panorama-images.s3.amazonaws.com/01_panorama.jpg",
+    panorama: cachedImage ? cachedImage : defaultImage,
     container: 'photosphere',
-    caption: 'Sample mountain panorama',
+    caption: '',
     loadingImg: 'https://photo-sphere-viewer.js.org/assets/photosphere-logo.gif',
     navbar: 'autorotate zoom download caption fullscreen',
     defaultLat: 0.3,

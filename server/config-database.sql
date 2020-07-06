@@ -27,6 +27,8 @@ SET time_zone = "+00:00";
 -- Table structure for table `annotations-table`
 --
 
+CREATE DATABASE panorama;
+
 CREATE TABLE `annotations-table` (
   `id` varchar(120) NOT NULL,
   `latitude` double NOT NULL,
