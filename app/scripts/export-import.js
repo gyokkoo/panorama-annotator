@@ -1,9 +1,9 @@
-function exportAnotations() {
-    getAllAnotations().then(result => {
+function exportAnnotations() {
+    getAllAnnotations().then(result => {
         console.debug(result);
         let exportElement = document.createElement('a');
-        exportElement.setAttribute('href', `data:application/json;charset=utf-8, `
-            + encodeURIComponent(result));
+        exportElement.setAttribute('href', `data:application/json;charset=utf-8, ` +
+            encodeURIComponent(result));
         exportElement.setAttribute('download', generateFilename() + '.json');
 
         document.body.appendChild(exportElement);
@@ -39,8 +39,8 @@ function addMarkers(data) {
                 removeable: false,
                 htmlAnnotation: true,
             }
-        } else if (marker['anotationImage']) {
-            markerToAdd['image'] = marker['anotationImage']
+        } else if (marker['annotationImage']) {
+            markerToAdd['image'] = marker['annotationImage']
             markerToAdd['data'] = {
                 removeable: true,
                 htmlAnnotation: false,
@@ -51,7 +51,7 @@ function addMarkers(data) {
     });
 }
 
-function importAnotations() {
+function importAnnotations() {
     const result = document.getElementById('import-result').value.trim();
     if (result.length !== 0) {
         addMarkers(JSON.parse(result));
@@ -66,7 +66,7 @@ function importAnotations() {
 
     const fReader = new FileReader();
 
-    fReader.onload = function (data) {
+    fReader.onload = function(data) {
         console.debug(data);
         const fileResult = JSON.parse(data.target.result);
         addMarkers(fileResult);

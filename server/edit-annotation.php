@@ -1,6 +1,6 @@
 <?php
 
-require_once "./src/Anotation.php";
+require_once "./src/Annotation.php";
 
 $phpInput = json_decode(file_get_contents("php://input"), true);
 
@@ -9,23 +9,23 @@ $latitude = $phpInput["latitude"];
 $longitude = $phpInput["longitude"];
 $panoramaImage = $phpInput["panoramaImage"];
 
-$anotation = new Anotation();
-$anotation->setId($id);
+$annotation = new Annotation();
+$annotation->setId($id);
 
 if (isset($phpInput["tooltip"])) {
     $tooltip = $phpInput["tooltip"];
-    $anotation->setTooltip($tooltip);
+    $annotation->setTooltip($tooltip);
 } else if (isset($phpInput["html"])) {
     $html = $phpInput["html"];
-    $anotation->setAnotationHtml($html);
+    $annotation->setAnnotationHtml($html);
 } else if (isset($phpInput["style"])) {
     $style = $phpInput["style"];
-    $anotation->setAnotationStyle($style);
+    $annotation->setAnnotationStyle($style);
 }
 
 try {
-    $anotation->editAnnotationProperty();
-    echo json_encode(["success" => true, "message" => "Anotation was successfully edited."]);
+    $annotation->editAnnotationProperty();
+    echo json_encode(["success" => true, "message" => "Annotation was successfully edited."]);
 } catch (Exception $exception) {
     http_response_code(503);
     echo json_encode([

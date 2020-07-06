@@ -14,7 +14,7 @@ const viewer = new PhotoSphereViewer.Viewer({
     plugins: [
         [PhotoSphereViewer.MarkersPlugin, {
             markers: [
-                // NOTE: Other markers are shown on panorama in getAllAnotations() method
+                // NOTE: Other markers are shown on panorama in getAllAnnotations() method
             ],
         }],
     ],
@@ -28,7 +28,7 @@ function updateImage(panoramaImageName) {
     viewer.setPanorama(panoramaImgEndpoint);
     window.localStorage.setItem("panorama-image", panoramaImgEndpoint);
 
-    getAllAnotations().then(markersData => {
+    getAllAnnotations().then(markersData => {
         markersPlugin.clearMarkers();
         if (markersData) {
             addMarkers(JSON.parse(markersData));
@@ -92,7 +92,7 @@ function getShareableView(id) {
 }
 
 viewer.once('ready', () => {
-    getAllAnotations().then(markersData => {
+    getAllAnnotations().then(markersData => {
         if (markersData) {
             addMarkers(JSON.parse(markersData));
         }
@@ -120,15 +120,15 @@ viewer.on('click', (e, data) => {
 
         markersPlugin.addMarker(marker);
 
-        saveAnotationMarker(marker);
+        saveAnnotationMarker(marker);
     }
 });
 
-markersPlugin.on('select-marker', function (e, marker, data) {
+markersPlugin.on('select-marker', function(e, marker, data) {
     if (marker.data) {
         if (data.dblclick && marker.data.removeable) {
             markersPlugin.removeMarker(marker);
-            removeAnotationMarker(marker);
+            removeAnnotationMarker(marker);
         } else if (data.rightclick) {
             if (marker.data.htmlAnnotation) {
                 markersPlugin.updateMarker({
@@ -139,7 +139,7 @@ markersPlugin.on('select-marker', function (e, marker, data) {
                 markersPlugin.updateMarker({
                     id: marker.id,
                     image: 'https://photo-sphere-viewer.js.org/assets/pin-blue.png',
-                    tooltip: 'Shareable anotation. <b>Click me!</b>',
+                    tooltip: 'Shareable annotation. <b>Click me!</b>',
                     content: getShareableView(marker.id, marker.config.longitude, marker.config.latitude, window.localStorage.getItem("panorama-image")),
                     data: {
                         removeable: false,
@@ -175,7 +175,7 @@ function changeTooltip(event) {
     if (!pinId || !tooltip) {
         console.error("Could not find pinId or pin tooltip!");
     }
-    editAnotation(pinId, tooltip);
+    editAnnotation(pinId, tooltip);
     markersPlugin.updateMarker({
         id: pinId,
         tooltip: tooltip
@@ -217,7 +217,7 @@ function changeHtmlAnnotation(event) {
         }
     });
 
-    editAnotation(pinId, undefined, htmlData, undefined);
+    editAnnotation(pinId, undefined, htmlData, undefined);
 }
 
 function changeStyleAnnotation(event) {
@@ -260,12 +260,12 @@ function changeStyleAnnotation(event) {
         }
     });
 
-    editAnotation(pinId, undefined, undefined, JSON.stringify(cssObject));
+    editAnnotation(pinId, undefined, undefined, JSON.stringify(cssObject));
 }
 
 function deleteAnnotation() {
     const pinId = document.getElementById("pin-id").innerHTML;
-    removeAnotationMarker({
+    removeAnnotationMarker({
         id: pinId
     });
     markersPlugin.removeMarker(pinId);

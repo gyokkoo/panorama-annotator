@@ -2,71 +2,73 @@
 <html lang="en">
 
 <head>
-	<title>Panorama anotator</title>
+    <title>Panorama anotator</title>
 
-	<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
-	<link rel="icon" href="./favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
 
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/photo-sphere-viewer.min.css" />
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/plugins/markers.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/photo-sphere-viewer.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/plugins/markers.css" />
 
-	<link rel="stylesheet" href="styles/alert.css">
-	<link rel="stylesheet" href="styles/styles.css">
-	<link rel="stylesheet" href="styles/buttons.css">
+    <link rel="stylesheet" href="styles/alert.css">
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/buttons.css">
 
-	<script src="./scripts/server-api.js"></script>
+    <script src="./scripts/server-api.js"></script>
 
-	<!-- Load Photo Sphere Viewer library -->
-	<script src="https://cdn.jsdelivr.net/npm/three/build/three.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/uevent@2/browser.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/photo-sphere-viewer.min.js"></script>
+    <!-- Load Photo Sphere Viewer library -->
+    <script src="https://cdn.jsdelivr.net/npm/three/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uevent@2/browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/photo-sphere-viewer.min.js"></script>
 
-	<!-- Load marker plugin -->
-	<script src="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/plugins/markers.js"></script>
+    <!-- Load marker plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/plugins/markers.js"></script>
 
-	<!-- QR code library -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <!-- QR code library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 
-	<!-- AWS SDK for Javascript -->
-	<script src="https://sdk.amazonaws.com/js/aws-sdk-2.704.0.min.js"></script>
+    <!-- AWS SDK for Javascript -->
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.704.0.min.js"></script>
 </head>
 
 <body>
-	<!-- Container for displaying back-end messages -->
-	<div id="message-container" class="alert">&nbsp;</div>
-	<span id="message-close-btn" class="close" onclick="hideMessage()">&times;</span>
-	<div class="header-wrapper">
-		<h1 class="page-title">Panorama anotator</h1>
-		<div class="dropdown">
-			<button class="panorama-dropdown button" type="button" data-toggle="dropdown" onclick="showDropdown(event)">
+    <!-- Container for displaying back-end messages -->
+    <div id="message-container" class="alert">&nbsp;</div>
+    <span id="message-close-btn" class="close" onclick="hideMessage()">&times;</span>
+    <div class="header-wrapper">
+        <h1 class="page-title">Panorama anotator</h1>
+        <div class="dropdown">
+            <button class="panorama-dropdown button" type="button" data-toggle="dropdown" onclick="showDropdown(event)">
 				Select panorama
 				<span class="caret"></span>
 			</button>
-			<ul id="panorama-images" class="dropdown-content">
-			</ul>
-		</div>
-	</div>
+            <ul id="panorama-images" class="dropdown-content">
+            </ul>
+        </div>
+    </div>
 
-	<div class="panorama-wrapper">
-		<div id="photosphere"></div>
-	</div>
+    <div class="panorama-wrapper">
+        <div id="photosphere"></div>
+    </div>
 
-	<div class="footer-actions">
-		<button id="import-btn" class="button" onclick="showImportArea()">Import anotations</button>
-		<button id="export" class="button" onclick="exportAnotations()">Export anotations</button>
-		<button id="export" class="button" onclick="openDeleteConfirmation()">Delete all anotations</button>
-	</div>	
-	<div id="import-area">
-		<input type="file" id="import-files" value="Import" /><br />
-		<textarea id="import-result"></textarea>
-		<button class="button-gray" onclick="importAnotations()">Import</button>
-		<button class="button-gray" onclick="hideImportArea()">Close</button>
-	</div>
+    <div class="footer-actions">
+        <button id="import-btn" class="button" onclick="showImportArea()">Import annotations</button>
+        <button id="export" class="button" onclick="exportAnnotations()">Export annotations</button>
+        <button id="export" class="button" onclick="openDeleteConfirmation()">Delete all annotations</button>
+    </div>
+    <div id="import-area">
+        <input type="file" id="import-files" value="Import" /><br />
+        <textarea id="import-result"></textarea>
+        <button class="button-gray" onclick="importAnnotations()">Import</button>
+        <button class="button-gray" onclick="hideImportArea()">Close</button>
+    </div>
 
-	<script src="scripts/script.js"></script>
-	<script src="scripts/s3-get-images.js"></script>
-	<script>listPanoramas();</script>
-	<script src="scripts/export-import.js"></script>
+    <script src="scripts/script.js"></script>
+    <script src="scripts/s3-get-images.js"></script>
+    <script>
+        listPanoramas();
+    </script>
+    <script src="scripts/export-import.js"></script>
 </body>
 
 </html>
