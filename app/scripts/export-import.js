@@ -80,7 +80,6 @@ function importAnnotations() {
 function openDeleteConfirmation() {
     if (window.confirm("Do you really want to delete all annotations for this panorama?")) {
         const panoramaImage = window.localStorage.getItem("panorama-image");
-        console.log(panoramaImage);
         deleteAllAnnotations(panoramaImage);
     }
 }
