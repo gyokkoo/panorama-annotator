@@ -4,7 +4,7 @@
 require_once "connect-database.php"; 
 $connection = connectDatabase();
 
-$truncateStatement = 'TRUNCATE TABLE `anotations-table`;';
+$truncateStatement = 'TRUNCATE TABLE `annotations-table`;';
 
 $truncateResult = $connection->prepare($truncateStatement);
 

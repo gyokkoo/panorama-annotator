@@ -9,10 +9,10 @@ if (!id) {
     throw new Error("Invalid url params, please use valid url!");
 }
 
-const getAnotationByIdEndpoint = serverEndpoint + `get-anotation.php?id=${encodeURIComponent(id)}`;
-fetch((getAnotationByIdEndpoint), {
-    method: 'GET'
-})
+const getAnnotationByIdEndpoint = serverEndpoint + `get-annotation.php?id=${encodeURIComponent(id)}`;
+fetch((getAnnotationByIdEndpoint), {
+        method: 'GET'
+    })
     .then(response => response.json())
     .then(response => {
         console.debug(response);
@@ -37,8 +37,8 @@ function initializePanoramaImage(data) {
     if (data.html) {
         markerToAdd['html'] = data.html;
         markerToAdd['style'] = data.style ? JSON.parse(data.style) : '';
-    } else if (data.anotationImage) {
-        markerToAdd['anotationImage'] = data.anotationImage;
+    } else if (data.annotationImage) {
+        markerToAdd['image'] = data.annotationImage;
     }
 
     const viewer = new PhotoSphereViewer.Viewer({

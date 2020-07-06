@@ -2,7 +2,7 @@
 
 require "connect-database.php";
 
-class Anotation
+class Annotation
 {
     private $connection;
     private $id;
@@ -10,7 +10,7 @@ class Anotation
     private $longitude;
     private $tooltip;
     private $panoramaImage;
-    private $anotationImage; // Optional
+    private $annotationImage; // Optional
     private $html; // Optional
     private $style; // Optional
     private $content; // Optional
@@ -58,9 +58,9 @@ class Anotation
         }
     }
 
-    public function setAnotationImage($anotationImage)
+    public function setAnnotationImage($annotationImage)
     {
-        $this->anotationImage = $anotationImage;
+        $this->annotationImage = $annotationImage;
     }
 
     public function setTooltip($tooltip)
@@ -68,12 +68,12 @@ class Anotation
         $this->tooltip = $tooltip;
     }
 
-    public function setAnotationHtml($html)
+    public function setAnnotationHtml($html)
     {
         $this->html = $html;
     }
 
-    public function setAnotationStyle($style)
+    public function setAnnotationStyle($style)
     {
         $this->style = $style;
     }
@@ -82,8 +82,8 @@ class Anotation
     {
         $this->validateAttributes();
         $insertStatement = $this->connection->prepare(
-            "INSERT INTO `anotations-table` (id, latitude, longitude, tooltip, panoramaImage, anotationImage, html, style, content)
-                       VALUES (:id, :latitude, :longitude, :tooltip, :panoramaImage, :anotationImage, :html, :style, :content)"
+            "INSERT INTO `annotations-table` (id, latitude, longitude, tooltip, panoramaImage, annotationImage, html, style, content)
+                       VALUES (:id, :latitude, :longitude, :tooltip, :panoramaImage, :annotationImage, :html, :style, :content)"
         );
 
         $insertResult = $insertStatement->execute([
@@ -92,7 +92,7 @@ class Anotation
             "longitude" => $this->longitude,
             "tooltip" => $this->tooltip,
             "panoramaImage" => $this->panoramaImage,
-            "anotationImage" => $this->anotationImage,
+            "annotationImage" => $this->annotationImage,
             "html" => $this->html,
             "style" => $this->style,
             "content" => $this->content
@@ -110,9 +110,9 @@ class Anotation
         }
     }
 
-    public function readAnotation()
+    public function readAnnotation()
     {
-        $getStatement = "SELECT * FROM `anotations-table` WHERE id = :id  LIMIT 0,1";
+        $getStatement = "SELECT * FROM `annotations-table` WHERE id = :id  LIMIT 0,1";
         $getResult = $this->connection->prepare($getStatement);
 
         // Sanitize
@@ -126,7 +126,7 @@ class Anotation
         $this->longitude = $row['longitude'];
         $this->tooltip = $row['tooltip'];
         $this->panoramaImage = $row['panoramaImage'];
-        $this->anotationImage = $row['anotationImage'];
+        $this->annotationImage = $row['annotationImage'];
         $this->html = $row['html'];
         $this->style = $row['style'];
         $this->content = $row['content'];
@@ -136,7 +136,7 @@ class Anotation
 
     public function read()
     {
-        $readStatement = "SELECT * FROM `anotations-table` WHERE panoramaImage = :panoramaImage";
+        $readStatement = "SELECT * FROM `annotations-table` WHERE panoramaImage = :panoramaImage";
         $readResult = $this->connection->prepare($readStatement);
 
         // Sanitize
@@ -150,7 +150,7 @@ class Anotation
 
     public function deleteFromDb(): void
     {
-        $deleteStatement = "DELETE FROM `anotations-table`  WHERE id = :id";
+        $deleteStatement = "DELETE FROM `annotations-table`  WHERE id = :id";
         $deleteResult = $this->connection->prepare($deleteStatement);
 
         // Sanitize
@@ -166,7 +166,7 @@ class Anotation
             throw new Exception("Cannot delete! Panorama image should be specified.");
         }
 
-        $deleteStatement = "DELETE FROM `anotations-table`  WHERE panoramaImage = :panoramaImage";
+        $deleteStatement = "DELETE FROM `annotations-table`  WHERE panoramaImage = :panoramaImage";
         $deleteResult = $this->connection->prepare($deleteStatement);
 
         $deleteResult->bindParam(':panoramaImage', $this->panoramaImage);
@@ -187,7 +187,7 @@ class Anotation
         $this->id = htmlspecialchars(strip_tags($this->id));
         if (isset($this->tooltip)) {
             $editStatement = "UPDATE
-                `anotations-table`
+                `annotations-table`
             SET
                 tooltip = :tooltip
             WHERE
@@ -197,7 +197,7 @@ class Anotation
             $editResult->bindParam(':tooltip', $this->tooltip);
         } else if (isset($this->html)) {
             $editStatement = "UPDATE
-                `anotations-table`
+                `annotations-table`
             SET
                 html = :html
             WHERE
@@ -208,7 +208,7 @@ class Anotation
             $editResult->bindParam(':html', $this->html);
         } else if (isset($this->style)) {
             $editStatement = "UPDATE
-                `anotations-table`
+                `annotations-table`
             SET
                 style = :style
             WHERE

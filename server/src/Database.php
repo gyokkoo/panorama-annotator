@@ -7,7 +7,7 @@ class Database
     public function __construct()
     {
         $dbhost = 'localhost';
-        $dbname = 'panorama-anotations';
+        $dbname = 'panorama-annotations';
         $username = 'root';
         $password = ''; // No password for simplicity.
 

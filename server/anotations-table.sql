@@ -18,29 +18,29 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `panorama-anotations`
+-- Database: `panorama-annotations`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `anotations-table`
+-- Table structure for table `annotations-table`
 --
 
-CREATE TABLE `anotations-table` (
+CREATE TABLE `annotations-table` (
   `id` varchar(120) NOT NULL,
   `latitude` double NOT NULL,
   `longitude` double NOT NULL,
   `tooltip` text NOT NULL,
   `panoramaImage` text NOT NULL,
-  `anotationImage` text NULL,
+  `annotationImage` text NULL,
   `html` text NULL,
   `style` text NULL,
   `content` text NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `anotations-table`
+-- Dumping data for table `annotations-table`
 --
 -- TODO: ADD;
 

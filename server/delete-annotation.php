@@ -1,17 +1,17 @@
 <?php
 
-require_once "./src/Anotation.php";
+require_once "./src/Annotation.php";
 
 $phpInput = json_decode(file_get_contents("php://input"), true);
 
 $id = $phpInput["id"];
 
-$anotation = new Anotation();
+$annotation = new Annotation();
 
-$anotation->setId($id);
+$annotation->setId($id);
 
 try {
-    $anotation->deleteFromDb();
+    $annotation->deleteFromDb();
 } catch (Exception $exception) {
     echo json_encode([
         'success' => false,
@@ -20,4 +20,4 @@ try {
     return;
 }
 
-echo json_encode(["success" => true, "message" => "Anotation was successfully removed."]);
+echo json_encode(["success" => true, "message" => "Annotation was successfully removed."]);

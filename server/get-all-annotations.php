@@ -1,6 +1,6 @@
 <?php
 
-require_once "./src/Anotation.php";
+require_once "./src/Annotation.php";
 $url = $_SERVER["REQUEST_URI"];
 $url_components = parse_url($url); 
  
@@ -8,13 +8,13 @@ parse_str($url_components['query'], $params);
       
 $panoramaImage = $params['panoramaImage'];
 
-$anotation = new Anotation();
-$anotation->setPanoramaImage($panoramaImage);
+$annotation = new Annotation();
+$annotation->setPanoramaImage($panoramaImage);
 
-$readStatement = $anotation->read();
+$readStatement = $annotation->read();
 
-$anotations = array();
-$anotations["result"] = array();
+$annotations = array();
+$annotations["result"] = array();
 
 while ($row = $readStatement->fetch(PDO::FETCH_ASSOC)) {
     extract($row);
@@ -25,15 +25,15 @@ while ($row = $readStatement->fetch(PDO::FETCH_ASSOC)) {
         "longitude" => $longitude,
         "tooltip" => $tooltip,
         "panoramaImage" => $panoramaImage,
-        "anotationImage" => $anotationImage,
+        "annotationImage" => $annotationImage,
         "html" => $html,
         "style" => $style,
         "content" => $content
     );
 
-    array_push($anotations["result"], $item);
+    array_push($annotations["result"], $item);
 }
 
 http_response_code(200);
 
-echo json_encode(["success" => true, "message" => "Found anotations.", "result" => $anotations["result"]]);
+echo json_encode(["success" => true, "message" => "Found annotations.", "result" => $annotations["result"]]);

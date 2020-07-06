@@ -1,5 +1,5 @@
 <?php
-require_once "./src/Anotation.php";
+require_once "./src/Annotation.php";
 
 $phpInput = json_decode(file_get_contents("php://input"), true);
 
@@ -9,28 +9,28 @@ $longitude = $phpInput["longitude"];
 $tooltip = $phpInput["tooltip"];
 $panoramaImage = $phpInput["panoramaImage"];
 
-$anotation = new Anotation();
+$annotation = new Annotation();
 
-$anotation->setAttributes($id, $latitude, $longitude, $tooltip, $panoramaImage);
+$annotation->setAttributes($id, $latitude, $longitude, $tooltip, $panoramaImage);
 
-if (isset($phpInput["anotationImage"])) {
-    $anotationImage = $phpInput["anotationImage"];
-    $anotation->setAnotationImage($anotationImage);
+if (isset($phpInput["annotationImage"])) {
+    $annotationImage = $phpInput["annotationImage"];
+    $annotation->setAnnotationImage($annotationImage);
 }
 if (isset($phpInput["html"]) && isset($phpInput["style"])) {
     $html = $phpInput["html"];
     $style = $phpInput["style"];
-    $anotation->setAnotationHtml($html);
-    $anotation->setAnotationStyle($style);
+    $annotation->setAnnotationHtml($html);
+    $annotation->setAnnotationStyle($style);
 }
 
 if(isset($phpInput["content"])){
     $content = $phpInput["content"];
-    $anotation->setContent($content);
+    $annotation->setContent($content);
 }
 
 try {
-    $anotation->storeInDatabase();
+    $annotation->storeInDatabase();
 } catch (Exception $exception) {
     echo json_encode([
         'success' => false,
@@ -39,4 +39,4 @@ try {
     return;
 }
 
-echo json_encode(["success" => true, "message" => "Anotation was successfully added."]);
+echo json_encode(["success" => true, "message" => "Annotation was successfully added."]);

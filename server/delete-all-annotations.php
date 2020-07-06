@@ -1,17 +1,17 @@
 <?php
 
-require_once "./src/Anotation.php";
+require_once "./src/Annotation.php";
 
 $phpInput = json_decode(file_get_contents("php://input"), true);
 
 $panoramaImage = $phpInput["panoramaImage"];
 
-$anotation = new Anotation();
+$annotation = new Annotation();
 
-$anotation->setPanoramaImage($panoramaImage);
+$annotation->setPanoramaImage($panoramaImage);
 
 try {
-    $operationSuccess = $anotation->deleteAllPanoramaAnnotations();
+    $operationSuccess = $annotation->deleteAllPanoramaAnnotations();
     echo json_encode([
         "success" => $operationSuccess,
         "message" => $operationSuccess ?
