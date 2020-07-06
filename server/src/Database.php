@@ -1,15 +1,16 @@
 <?php
 
+require "./config.php";
 class Database
 {
     private $connection;
 
     public function __construct()
     {
-        $dbhost = 'localhost';
-        $dbname = 'panorama-annotations';
-        $username = 'root';
-        $password = ''; // No password for simplicity.
+        $dbhost = Config::$DB_HOST;
+        $dbname = Config::$DB_NAME;
+        $username = Config::$DB_USER;
+        $password = Config::$DB_PASS; // No password for simplicity.
 
         $this->connection = new PDO("mysql:host=$dbhost;dbname=$dbname", $username, $password,
             [
