@@ -4,15 +4,24 @@ body {
 
 /* the viewer container must have a defined size */
 #photosphere {
-    width: 85%;
     height: 70vh;
-    margin-right: 200px;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.footer-actions {
+    text-align: center;
 }
 
 #import-result {
     height: 250px;
     width: 400px;
     display: block;
+    margin: auto;
+}
+
+#import-area {
+    text-align: center;
 }
 
 #pin-id {
@@ -23,10 +32,15 @@ body {
     margin-top: 15px;
 }
 
+#get-shareable-url {
+    color: white;
+}
+
 .header-wrapper {
     text-align: center;
     padding-top: 0px;
     padding-bottom: 5px;
+    margin-right: 10%;
 }
 
 .page-title {
@@ -37,7 +51,7 @@ body {
     font-weight: normal;
     line-height: 48px;
     margin: 0;
-    padding-right: 50px;
+    margin-left: 25%;
 }
 
 .psv-container {

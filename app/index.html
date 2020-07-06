@@ -51,8 +51,11 @@
 		<div id="photosphere"></div>
 	</div>
 
-	<button id="import-btn" class="button" onclick="showImportArea()">Import anotations</button>
-	<button id="export" class="button" onclick="exportAnotations()">Export anotations</button>
+	<div class="footer-actions">
+		<button id="import-btn" class="button" onclick="showImportArea()">Import anotations</button>
+		<button id="export" class="button" onclick="exportAnotations()">Export anotations</button>
+		<button id="export" class="button" onclick="openDeleteConfirmation()">Delete all anotations</button>
+	</div>	
 	<div id="import-area">
 		<input type="file" id="import-files" value="Import" /><br />
 		<textarea id="import-result"></textarea>

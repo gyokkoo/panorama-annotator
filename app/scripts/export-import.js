@@ -73,6 +73,14 @@ function importAnotations() {
         const formatted = JSON.stringify(fileResult, null, 2);
         document.getElementById('import-result').value = formatted;
     }
-    
+
     fReader.readAsText(files.item(0));
+}
+
+function openDeleteConfirmation() {
+    if (window.confirm("Do you really want to delete all annotations for this panorama?")) {
+        const panoramaImage = window.localStorage.getItem("panorama-image");
+        console.log(panoramaImage);
+        deleteAllAnnotations(panoramaImage);
+    }
 }
