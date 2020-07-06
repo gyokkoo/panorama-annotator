@@ -23,9 +23,10 @@ const viewer = new PhotoSphereViewer.Viewer({
 const markersPlugin = viewer.getPlugin(PhotoSphereViewer.MarkersPlugin);
 
 function updateImage(panoramaImageName) {
-    console.log(panoramaImageName);
     const panoramaImgEndpoint = 'https://fmi-panorama-images.s3.amazonaws.com/' + panoramaImageName;
     viewer.setPanorama(panoramaImgEndpoint);
+
+    setPanoramaImageDescriptionTag(viewer, panoramaImageName);
     window.localStorage.setItem("panorama-image", panoramaImgEndpoint);
 
     getAllAnnotations().then(markersData => {

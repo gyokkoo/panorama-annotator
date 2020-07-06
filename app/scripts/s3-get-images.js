@@ -1,4 +1,4 @@
-const albumBucketName = 'fmi-panorama-images';
+const panoramaBucketName = 'fmi-panorama-images';
 
 // **DO THIS**:
 //   Replace this block of code with the sample code located at:
@@ -15,65 +15,50 @@ AWS.config.credentials = new AWS.CognitoIdentityCredentials({
 
 // Create a new service object
 var s3 = new AWS.S3({
-  apiVersion: '2006-03-01',
-  params: {Bucket: albumBucketName}
+    apiVersion: '2006-03-01',
+    params: { Bucket: panoramaBucketName }
 });
 
 // A utility function to create HTML.
 function getHtml(template) {
-  return template.join('\n');
+    return template.join('\n');
 }
 
-
-//
-// Functions
-//
-// var params = {
-//     Bucket: albumBucketName , 
-//     Key: "01_panorama.jpg"
-//    };
-//    s3.getObjectTagging(params, function(err, data) {
-//      if (err) console.log(err, err.stack); // an error occurred
-//      else     console.log(data);           // successful response
-//      /*
-//      data = {
-//       TagSet: [
-//          {
-//         Key: "Key4", 
-//         Value: "Value4"
-//        }, 
-//          {
-//         Key: "Key3", 
-//         Value: "Value3"
-//        }
-//       ], 
-//       VersionId: "null"
-//      }
-//      */
-//    });
+function setPanoramaImageDescriptionTag(viewer, key) {
+    const params = {
+        Bucket: panoramaBucketName,
+        Key: key
+    };
+    s3.getObjectTagging(params, (err, data) => {
+        if (err) {
+            console.log(err, err.stack);
+        } else {
+            const description = data["TagSet"][0]["Value"];
+            viewer.setOption("caption", description);
+            return description;
+        }
+    });
+}
 
 function listPanoramas() {
-  s3.listObjects({Delimiter: '/'}, function(err, data) {
-    console.log(data);
-    if (err) {
-        console.log(err);
-      return alert('An error occured while listing panorama images: ' + err.message);
-    } else {
-      const images = data.Contents.map(function(content) {
-        const panorama = content.Key;
-        return getHtml([
-            `<button onclick="updateImage('${panorama}')">`,
-              panorama,
-            '</button>',
-        ]);
-      });
+    s3.listObjects({ Delimiter: '/' }, function(err, data) {
+        if (err) {
+            console.log(err);
+            return alert('An error occured while listing panorama images: ' + err.message);
+        } else {
+            const images = data.Contents.map(function(content) {
+                const panorama = content.Key;
+                return getHtml([
+                    `<button onclick="updateImage('${panorama}')">`,
+                    panorama,
+                    '</button>',
+                ]);
+            });
 
-      const divElement = document.createElement('div');
-      divElement.innerHTML = getHtml(images);
+            const divElement = document.createElement('div');
+            divElement.innerHTML = getHtml(images);
 
-      document.getElementById('panorama-images').appendChild(divElement);
-    }
-  });
+            document.getElementById('panorama-images').appendChild(divElement);
+        }
+    });
 }
-
-
