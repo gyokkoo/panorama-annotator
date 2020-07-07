@@ -1,6 +1,5 @@
 # :round_pushpin: Panorama Annotator
  
-Click [HERE](http://ec2-3-93-172-10.compute-1.amazonaws.com/panorama-annotator/app/index.html) to open the application! :round_pushpin:	
 ## Функционалности:
 Платформата предоставя на потребителите голямо разнообразие от функционалности:
 1.	Разглеждане на 360 градусови анотирани панорамни снимки<br/>
