@@ -1,12 +1,11 @@
 <?php
 
-$path    = '../static/panoramas';
+// Search $path directory for image files.
+$path = '../static/panoramas';
 $files = scandir($path);
 
-// Remove . and .. from the returned array from scandir:
+// Remove . and .. from the returned array from scandir.
 $files = array_diff(scandir($path), array('.', '..'));
-
-http_response_code(200);
     
 if (count($files) == 0) {
     echo json_encode([
@@ -14,11 +13,11 @@ if (count($files) == 0) {
         "message" => "Could not find local panoramas.", 
         "result" => []
     ]);
-    return;
-};
-
-echo json_encode([
-    "success" => true, 
-    "message" => "Loaded panoramas from the server.", 
-    "result" => array_values($files)
-]);
+} else {
+    echo json_encode([
+        "success" => true, 
+        "message" => "Loaded panoramas from the server.", 
+        "result" => array_values($files)
+    ]);
+}
+    
