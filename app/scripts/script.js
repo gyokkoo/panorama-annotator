@@ -1,6 +1,7 @@
 hideDropdown();
 hideImportArea();
-const defaultImage = "https://fmi-panorama-images.s3.amazonaws.com/01_mountain.jpg";
+
+const defaultImage = "http://localhost/app/panorama-annotator/server/static/panoramas/02_university.jpg";
 
 const cachedImage = window.localStorage.getItem("panorama-image");
 const viewer = new PhotoSphereViewer.Viewer({
@@ -24,10 +25,10 @@ const viewer = new PhotoSphereViewer.Viewer({
 const markersPlugin = viewer.getPlugin(PhotoSphereViewer.MarkersPlugin);
 
 function updateImage(panoramaImageName) {
-    const panoramaImgEndpoint = 'https://fmi-panorama-images.s3.amazonaws.com/' + panoramaImageName;
+    // Note: Consider another approach with window.location href and parsing.
+    const panoramaImgEndpoint = 'http://localhost/app/panorama-annotator/server/static/panoramas/' + panoramaImageName;
     viewer.setPanorama(panoramaImgEndpoint);
 
-    setPanoramaImageDescriptionTag(viewer, panoramaImageName);
     window.localStorage.setItem("panorama-image", panoramaImgEndpoint);
 
     getAllAnnotations().then(markersData => {

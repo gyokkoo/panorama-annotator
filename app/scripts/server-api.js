@@ -129,6 +129,22 @@ function deleteAllAnnotations(panoramaImage) {
         });
 }
 
+function retrieveLocalPanoramaImageNames() {
+    return fetch(serverEndpoint + "panorama/get-local-panoramas.php", {
+            method: "GET",
+        })
+        .then(response => response.json())
+        .then(response => {
+            if (response.success === true && response.message) {
+                displayMessage("alert-success", response.message);
+                return response.result;
+            } else if (response.success === false && response.message) {
+                displayMessage("alert-danger", response.message);
+                return [];
+            }
+        });
+}
+
 // Note: Do not use in production. This is intended to be used only for DEV purpose.
 function deleteAllData() {
     fetch(serverEndpoint + "delete-all-data.php", {

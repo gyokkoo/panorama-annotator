@@ -26,9 +26,6 @@
 
     <!-- QR code library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
-
-    <!-- AWS SDK for Javascript -->
-    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.704.0.min.js"></script>
 </head>
 
 <body>
@@ -64,9 +61,10 @@
     </div>
 
     <script src="scripts/script.js"></script>
-    <script src="scripts/s3-get-images.js"></script>
+    <script src="scripts/load-panoramas.js"></script>
     <script>
-        listPanoramas();
+        // Search for local panorama images and display available panoramas in 'Select panorama' dropdown.
+        listLocalPanoramas();
     </script>
     <script src="scripts/export-import.js"></script>
 </body>
